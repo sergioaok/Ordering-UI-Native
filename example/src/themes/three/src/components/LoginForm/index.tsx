@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Pressable, StyleSheet, View, Keyboard } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { useForm, Controller } from 'react-hook-form';
-import { PhoneInputNumber } from '../../../../../components/PhoneInputNumber'
+import { PhoneInputNumber } from '../PhoneInputNumber'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import {
@@ -255,6 +255,9 @@ const LoginFormUI = (props: LoginParams) => {
             )}
             {useLoginByCellphone && loginTab === 'cellphone' && (
               <View style={{ marginBottom: 25 }}>
+                <OText size={14} weight={500} mBottom={10}>
+                  {t('MOBILE_CHECKOUT_PHONE', 'Phone')}
+                </OText>
                 <PhoneInputNumber
                   data={phoneInputData}
                   handleData={(val: any) => setPhoneInputData(val)}
