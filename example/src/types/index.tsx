@@ -7,6 +7,7 @@ export interface LoginParams {
   loginTab?: string;
   handleChangeTab?: any;
   loginButtonText?: string;
+  signupButtonText?: string;
   onNavigationRedirect?: any;
   registerButtonText?: string;
   forgotButtonText?: string;

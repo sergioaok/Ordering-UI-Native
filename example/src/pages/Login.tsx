@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import styled from 'styled-components/native';
-import { LoginForm } from '../components/LoginForm';
+import { LoginForm } from '../themes/three/src/components/LoginForm';
 import { colors } from '../theme.json';
 import { Container } from '../layouts/Container';
 
@@ -18,10 +18,10 @@ export const Login = ({ navigation, route }: any) => {
   const loginProps = {
     navigation,
     useLoginByCellphone: true,
-    loginButtonText: t('LOGIN', 'Login'),
+    loginButtonText: t('SIGNIN', 'Sign in'),
     loginButtonBackground: colors.primary,
     forgotButtonText: t('FORGOT_YOUR_PASSWORD', 'Forgot your password?'),
-    registerButtonText: t('SIGNUP', 'Signup'),
+    registerButtonText: t('CREATE_ACCOUNT', 'Create account'),
     onNavigationRedirect: (page: string) => {
       if (!page) return
       navigation.navigate(page);

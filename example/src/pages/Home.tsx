@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
-import { Home as HomePage } from '../components/Home';
+import { Home as HomePage } from '../themes/three/src/components/Home';
 import { colors } from '../theme.json';
 
 export const Home = (props: any) => {
