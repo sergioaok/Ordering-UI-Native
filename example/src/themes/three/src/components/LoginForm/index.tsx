@@ -219,7 +219,7 @@ const LoginFormUI = (props: LoginParams) => {
           <FormInput>
             {useLoginByEmail && loginTab === 'email' && (
               <>
-                <OText size={14} weight={500} mBottom={10}>
+                <OText size={14} weight={500} mBottom={8}>
                   {t('EMAIL', 'Email')}
                 </OText>
                 <Controller
@@ -255,7 +255,7 @@ const LoginFormUI = (props: LoginParams) => {
             )}
             {useLoginByCellphone && loginTab === 'cellphone' && (
               <View style={{ marginBottom: 25 }}>
-                <OText size={14} weight={500} mBottom={10}>
+                <OText size={14} weight={500} mBottom={8}>
                   {t('MOBILE_CHECKOUT_PHONE', 'Phone')}
                 </OText>
                 <PhoneInputNumber
@@ -416,7 +416,7 @@ const loginStyle = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    marginBottom: 10
+    marginBottom: 8
   },
   linkTxt: {
     flexDirection: 'row',
