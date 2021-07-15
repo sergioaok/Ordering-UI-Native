@@ -596,7 +596,7 @@ const AddressFormUI = (props: AddressFormParams) => {
                   setSaveLocation={setSaveMapLocation}
                   handleToggleMap={handleToggleMap}
                 />
-                 <MaterialIcon
+                <MaterialIcon
                   name='close'
                   size={35}
                   style={styles.modalCloseBtn}
@@ -655,7 +655,8 @@ const styles = StyleSheet.create({
   modalCloseBtn: {
     position: 'absolute',
     top: 20,
-    right: 20
+    right: 20,
+    color: colors.black
   }
 })
 
