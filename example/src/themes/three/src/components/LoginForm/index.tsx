@@ -407,8 +407,6 @@ const loginStyle = StyleSheet.create({
   },
   inputStyle: {
     marginBottom: 25,
-    borderWidth: 1,
-    borderColor: colors.disabled,
     backgroundColor: colors.backgroundGray,
     borderRadius: 0
   },

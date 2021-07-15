@@ -497,9 +497,8 @@ const style = StyleSheet.create({
   },
   inputStyle: {
     marginBottom: 25,
-    borderWidth: 1,
     borderRadius: 0,
-    borderColor: colors.disabled
+    backgroundColor: colors.backgroundGray
   },
   wrappText: {
     display: 'flex',

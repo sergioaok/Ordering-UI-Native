@@ -97,8 +97,6 @@ export const PhoneInputNumber = (props: PhoneInputParams) => {
 const style = StyleSheet.create({
   input: {
     backgroundColor: colors.backgroundGray,
-    borderWidth: 1,
-    borderColor: colors.disabled,
     paddingVertical: 0,
     flexGrow: 1,
     flex: 1,
