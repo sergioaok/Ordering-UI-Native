@@ -1,11 +1,9 @@
 import styled from 'styled-components/native'
 import { colors } from '../../../../../theme.json'
 
-export const WelcomeTitle = styled.View`
-  flex: 1;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 15px;
+export const Divider = styled.View`
+  height: 8px;
+  background-color: ${colors.backgroundGray};
 `
 
 export const BusinessList = styled.View`
@@ -22,11 +20,10 @@ export const Search = styled.View`
 
 export const AddressInput = styled.TouchableOpacity`
   flex-direction: row;
-  background-color: ${colors.inputDisabled};
+  justify-content: center;
   border-radius: 10px;
   align-items: center;
   margin-horizontal: 10px;
-  padding: 15px;
   flex: 1;
   width: 100%;
   z-index: -10;
@@ -38,14 +35,17 @@ export const OrderControlContainer = styled.View`
   align-items: center;
   justify-content: space-between;
   z-index: 10;
-  padding-bottom: 20px;
   flex: 1;
 `
 
 export const WrapMomentOption = styled.TouchableOpacity`
-  background-color: ${colors.inputDisabled};
-  border-radius: 10px;
+  background-color: ${colors.primary};
+  border-radius: 20px;
   margin-vertical: 5px;
-  padding: 15px 20px;
+  height: 40px;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 20px;
+  margin-horizontal: 10px;
   max-width: 240px;
 `

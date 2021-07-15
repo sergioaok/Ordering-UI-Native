@@ -20,8 +20,8 @@ import {
   BusinessState,
   BusinessLogo,
   Reviews,
+  VerticalLine
 } from './styles';
-import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -49,12 +49,11 @@ export const BusinessControllerUI = (props: BusinessControllerParams) => {
     <Card activeOpacity={1} onPress={() => handleClick(business)}>
       <BusinessHero
         source={{ uri: optimizeImage(business?.header, 'h_400,c_limit') }}
-        imageStyle={styles.headerStyle}
         isClosed={isBusinessOpen || isBusinessClose}
       >
         {business?.featured && (
           <View style={styles.featured}>
-            <FontAwesomeIcon name='crown' size={26} color='gold' />
+            <FontAwesomeIcon name='crown' size={16} color='gold' />
           </View>
         )}
         {!isBusinessOpen || isBusinessClose && (
@@ -84,31 +83,26 @@ export const BusinessControllerUI = (props: BusinessControllerParams) => {
         <BusinessInfo>
           <View style={{ width: '70%', alignItems: 'flex-start' }}>
             <OText
-                size={20}
-                numberOfLines={1}
-                ellipsizeMode='tail'
-              >
+              size={18}
+              weight={600}
+              numberOfLines={1}
+              ellipsizeMode='tail'
+            >
               {business?.name}
             </OText>
           </View>
           {business?.reviews?.total > 0 && (
             <Reviews>
-              <IconAntDesign
-                name="star"
-                color={colors.primary}
-                size={16}
-                style={styles.starIcon}
-              />
-              <OText>{parseNumber(business?.reviews?.total, { separator: '.' })}</OText>
+              <OText size={12}>{parseNumber(business?.reviews?.total, { separator: '.' })}</OText>
             </Reviews>
           )}
         </BusinessInfo>
         <BusinessCategory>
-          <OText>{getBusinessType()}</OText>
+          <OText color={colors.gray}>{getBusinessType()}</OText>
         </BusinessCategory>
         <Metadata>
           <View style={styles.bullet}>
-            <MaterialComIcon name='alarm' size={16} />
+            <MaterialComIcon name='alarm' size={16} color={colors.gray} />
             <OText style={styles.metadata}>
               {convertHoursToMinutes(
                 orderState?.options?.type === 1
@@ -117,14 +111,16 @@ export const BusinessControllerUI = (props: BusinessControllerParams) => {
               )}
             </OText>
           </View>
+          <VerticalLine />
           <View style={styles.bullet}>
-            <MaterialIcon name='location-on' size={16} />
+            <MaterialIcon name='location-on' size={16} color={colors.gray} />
             <OText style={styles.metadata}>
               {parseDistance(business?.distance)}
             </OText>
           </View>
+          <VerticalLine />
           <View style={styles.bullet}>
-            <MaterialComIcon name='truck-delivery' size={16} style={{ marginBottom: -2 }} />
+            <MaterialComIcon name='truck-delivery' size={16} color={colors.gray} style={{ marginBottom: -2 }} />
             <OText style={styles.metadata}>
               {parsePrice(business?.delivery_price)}
             </OText>
@@ -136,16 +132,12 @@ export const BusinessControllerUI = (props: BusinessControllerParams) => {
 };
 
 const styles = StyleSheet.create({
-  headerStyle: {
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-  },
   businessLogo: {
-    width: 75,
-    height: 75,
+    width: 60,
+    height: 60,
     marginLeft: 20,
     marginBottom: 20,
-    borderRadius: 25,
+    borderRadius: 5,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
@@ -159,9 +151,8 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   metadata: {
-    marginRight: 20,
     marginLeft: 5,
-    marginBottom: -5,
+    color: colors.gray
   },
   starIcon: {
     marginTop: 1.5,
@@ -172,7 +163,7 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: colors.backgroundDark,
     opacity: 0.8,
-    borderRadius: 10,
+    borderRadius: 5,
     left: 20,
     top: 10
   },

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Fade, Placeholder, PlaceholderLine } from 'rn-placeholder'
 import { View, StyleSheet, ScrollView, Platform, PanResponder, I18nManager } from 'react-native'
-import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import {
   BusinessList as BusinessesListingController,
   useLanguage,
@@ -11,17 +11,17 @@ import {
   useUtils
 } from 'ordering-components/native'
 
-import { WelcomeTitle, Search, OrderControlContainer, AddressInput, WrapMomentOption } from './styles'
+import { Divider, Search, OrderControlContainer, AddressInput, WrapMomentOption } from './styles'
 
 import NavBar from '../../../../../components/NavBar'
 import { colors } from '../../../../../theme.json'
-import { SearchBar } from '../../../../../components/SearchBar'
+import { SearchBar } from '../SearchBar'
 import { OText, OBottomPopup } from '../../../../../components/shared'
 import { BusinessesListingParams } from '../../../../../types'
 import { NotFoundSource } from '../../../../../components/NotFoundSource'
-import { BusinessTypeFilter } from '../../../../../components/BusinessTypeFilter'
+import { BusinessTypeFilter } from '../BusinessTypeFilter'
 import { BusinessController } from '../BusinessController'
-import { OrderTypeSelector } from '../../../../../components/OrderTypeSelector'
+import { OrderTypeSelector } from '../OrderTypeSelector'
 import { ToastType, useToast } from '../../../../../providers/ToastProvider'
 import { MomentOption } from '../MomentOption'
 
@@ -46,17 +46,6 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
   const {showToast} = useToast()
 
   const [openMomentOption, setOpenMomentOption] = useState(false)
-  // const timerId = useRef<any>(false)
-  // const panResponder = useRef(
-  //   PanResponder.create({
-  //     onMoveShouldSetPanResponder: (e, gestureState) => {
-  //       const {dx, dy} = gestureState;
-  //       resetInactivityTimeout()
-  //       return (Math.abs(dx) > 20) || (Math.abs(dy) > 20);
-  //     },
-  //   })
-  // ).current
-
   const configTypes = configs?.order_types_allowed?.value.split('|').map((value: any) => Number(value)) || []
 
   const handleScroll = ({ nativeEvent }: any) => {
@@ -70,17 +59,6 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
     }
   }
 
-  // const resetInactivityTimeout = () => {
-  //   clearTimeout(timerId.current)
-  //   timerId.current = setInterval(() => {
-  //     getBusinesses(true)
-  //   }, 600000)
-  // }
-
-  // useEffect(() => {
-  //   resetInactivityTimeout()
-  // }, [])
-
   return (
     <>
       <ScrollView style={styles.container} onScroll={(e) => handleScroll(e)}>
@@ -92,26 +70,36 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
             style={{ paddingBottom: 0 }}
           />
         )}
-        {auth && (
-          <WelcomeTitle>
-            <View style={styles.welcome}>
-              <OText style={{ fontWeight: 'bold' }} size={28} >
-                {t('WELCOME_TITLE_APP', 'Hello there')}
+        <OrderControlContainer>
+          <AddressInput
+            onPress={() => auth
+              ? navigation.navigate('AddressList', { isFromBusinesses: true })
+              : navigation.navigate('AddressForm', { address: orderState.options?.address,isFromBusinesses: true  })}
+          >
+            <OText size={16} numberOfLines={1}>
+              {orderState?.options?.address?.address}
+            </OText>
+            <MaterialIcon
+              name='keyboard-arrow-down'
+              color={colors.primary}
+              size={20}
+              style={{ marginRight: 10 }}
+            />
+          </AddressInput>
+          <View style={styles.wrapperOrderOptions}>
+            <OrderTypeSelector configTypes={configTypes} />
+            <WrapMomentOption
+              onPress={() => setOpenMomentOption(true)}
+            >
+              <OText size={14} color={colors.white} numberOfLines={1} ellipsizeMode='tail'>
+                {orderState.options?.moment
+                  ? parseDate(orderState.options?.moment, { outputFormat: configs?.format_time?.value === '12' ? 'MM/DD hh:mma' : 'MM/DD HH:mm' })
+                  : t('ASAP_ABBREVIATION', 'ASAP')}
               </OText>
-              <View style={{ maxWidth: '65%' }}>
-                <OText
-                  style={{ fontWeight: 'bold' }}
-                  size={28}
-                  color={colors.primary}
-                  numberOfLines={1}
-                  ellipsizeMode='tail'
-                >
-                  {I18nManager.isRTL ? `${user?.name}, ` : `, ${user?.name}`}
-                </OText>
-              </View>
-            </View>
-          </WelcomeTitle>
-        )}
+            </WrapMomentOption>
+          </View>
+        </OrderControlContainer>
+
         <Search>
           <SearchBar
             onSearch={handleChangeSearch}
@@ -123,41 +111,14 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
             placeholder={t('FIND_BUSINESS', 'Find a Business')}
           />
         </Search>
-        <OrderControlContainer>
-          <View style={styles.wrapperOrderOptions}>
-            <OrderTypeSelector configTypes={configTypes} />
-            <WrapMomentOption
-              onPress={() => setOpenMomentOption(true)}
-            >
-              <OText size={14} numberOfLines={1} ellipsizeMode='tail'>
-                {orderState.options?.moment
-                  ? parseDate(orderState.options?.moment, { outputFormat: configs?.format_time?.value === '12' ? 'MM/DD hh:mma' : 'MM/DD HH:mm' })
-                  : t('ASAP_ABBREVIATION', 'ASAP')}
-              </OText>
-            </WrapMomentOption>
-          </View>
-          <AddressInput
-            onPress={() => auth
-              ? navigation.navigate('AddressList', { isFromBusinesses: true })
-              : navigation.navigate('AddressForm', { address: orderState.options?.address,isFromBusinesses: true  })}
-          >
-            <MaterialComIcon
-              name='home-outline'
-              color={colors.primary}
-              size={20}
-              style={{ marginRight: 10 }}
-            />
-            <OText size={16} style={styles.inputStyle} numberOfLines={1}>
-              {orderState?.options?.address?.address}
-            </OText>
-          </AddressInput>
-        </OrderControlContainer>
+
         <BusinessTypeFilter
           images={props.images}
           businessTypes={props.businessTypes}
           defaultBusinessType={props.defaultBusinessType}
           handleChangeBusinessType={handleChangeBusinessType}
         />
+        <Divider />
         {
           !businessesList.loading && businessesList.businesses.length === 0 && (
             <NotFoundSource
@@ -181,7 +142,7 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
             {[...Array(paginationProps.nextPageItems ? paginationProps.nextPageItems : 8).keys()].map((item, i) => (
               <Placeholder Animation={Fade} key={i} style={{ marginBottom: 20 }}>
                 <View style={{ width: '100%' }}>
-                  <PlaceholderLine height={200} style={{ marginBottom: 20, borderRadius: 25 }} />
+                  <PlaceholderLine height={180} style={{ marginBottom: 20, borderRadius: 0 }} />
                   <View style={{ paddingHorizontal: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                       <PlaceholderLine height={25} width={40} style={{ marginBottom: 10 }} />
@@ -218,18 +179,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row'
   },
-  inputStyle: {
-    backgroundColor: colors.inputDisabled,
-    flex: 1
-  },
   wrapperOrderOptions: {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
-    zIndex: 100
+    zIndex: 100,
+    marginVertical: 15
   },
   borderStyle: {
     borderColor: colors.backgroundGray,

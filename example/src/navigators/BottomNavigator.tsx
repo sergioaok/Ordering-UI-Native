@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Platform, PlatformIOSStatic } from 'react-native'
+import { View, Platform, PlatformIOSStatic, StyleSheet } from 'react-native'
 import { useLanguage, useOrder } from 'ordering-components/native'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -15,14 +15,14 @@ import CartList from '../pages/CartList'
 import Profile from '../pages/Profile'
 
 const CartsLenght = styled.View`
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   background-color: ${colors.primary};
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  right: 0;
+  right: 5px;
 `
 
 const Tab = createMaterialBottomTabNavigator();
@@ -53,8 +53,11 @@ const BottomNavigator = () => {
         options={{
           tabBarIcon:
             ({ color }) => (
-              <View style={{ width: 50, height: 50, justifyContent: !isIos ? 'flex-start' : 'space-evenly', position: 'relative', bottom: !isIos ? 10 : 0  }}>
-                <MaterialCommunityIcon name='home' size={46} color={color} />
+              <View style={{ ...styles.tabStyle, justifyContent: !isIos ? 'flex-start' : 'space-evenly', position: 'relative', bottom: !isIos ? 10 : 0  }}>
+                <MaterialCommunityIcon name='home' size={36} color={color} />
+                <OText color={color}>
+                  {t('HOME', 'Home')}
+                </OText>
               </View>
             )
         }}
@@ -66,8 +69,11 @@ const BottomNavigator = () => {
           {
             tabBarIcon:
               ({ color }) => (
-                <View style={{ width: 50, height: 50, justifyContent: !isIos ? 'flex-start' : 'space-evenly', position: 'relative', bottom: !isIos ? 10 : 0 }}>
-                  <MaterialIcon name='format-list-bulleted' size={46} color={color} />
+                <View style={{ ...styles.tabStyle, justifyContent: !isIos ? 'flex-start' : 'space-evenly', position: 'relative', bottom: !isIos ? 10 : 0 }}>
+                  <MaterialIcon name='format-list-bulleted' size={36} color={color} />
+                  <OText color={color}>
+                    {t('ORDERS', 'Orders')}
+                  </OText>
                 </View>
               ),
           }}
@@ -86,16 +92,20 @@ const BottomNavigator = () => {
                   bottom: !isIos ? 10 : 0
                 }}
               >
-                <MaterialIcon name='shopping-basket' size={46} color={color} />
+                <MaterialIcon name='shopping-basket' size={36} color={color} />
                 {cartsList.length > 0 && (
                   <CartsLenght style={{ borderRadius: 100 / 2 }}>
                     <OText
+                      size={12}
                       color={colors.white}
                     >
                       {cartsList.length}
                     </OText>
                   </CartsLenght>
                 )}
+                <OText color={color}>
+                  {t('Carts', 'Carts')}
+                </OText>
               </View>
             )
         }}
@@ -106,8 +116,9 @@ const BottomNavigator = () => {
         options={{
           tabBarIcon:
             ({ color }) => (
-              <View style={{ width: 50, height: 50, justifyContent: !isIos ? 'flex-start' : 'space-evenly', position: 'relative', bottom: !isIos ? 10 : 0  }}>
-                <MaterialIcon name='person' size={46} color={color} />
+              <View style={{ ...styles.tabStyle, justifyContent: !isIos ? 'flex-start' : 'space-evenly', position: 'relative', bottom: !isIos ? 10 : 0  }}>
+                <MaterialIcon name='person' size={36} color={color} />
+                <OText color={color}>{t('MOBILE_PROFILE', 'Profile')}</OText>
               </View>
             )
         }}
@@ -115,5 +126,14 @@ const BottomNavigator = () => {
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  tabStyle: {
+    width: 50,
+    height: 50,
+    flexDirection: 'column',
+    alignItems: 'center'
+  }
+})
 
 export default BottomNavigator
