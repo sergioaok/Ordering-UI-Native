@@ -1,6 +1,12 @@
 import styled from 'styled-components/native'
 import { colors } from '../../../../../theme.json'
 
+export const BusinessListContainer = styled.View`
+  flex: 1;
+  flex-direction: column;
+  padding: 20px;
+`
+
 export const Divider = styled.View`
   height: 8px;
   background-color: ${colors.backgroundGray};
@@ -24,9 +30,7 @@ export const AddressInput = styled.TouchableOpacity`
   border-radius: 10px;
   align-items: center;
   margin-horizontal: 10px;
-  flex: 1;
   width: 100%;
-  z-index: -10;
 `
 
 export const OrderControlContainer = styled.View`
@@ -35,7 +39,6 @@ export const OrderControlContainer = styled.View`
   align-items: center;
   justify-content: space-between;
   z-index: 10;
-  flex: 1;
 `
 
 export const WrapMomentOption = styled.TouchableOpacity`

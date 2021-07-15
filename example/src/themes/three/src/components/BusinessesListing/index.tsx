@@ -11,7 +11,7 @@ import {
   useUtils
 } from 'ordering-components/native'
 
-import { Divider, Search, OrderControlContainer, AddressInput, WrapMomentOption } from './styles'
+import { BusinessListContainer, Divider, Search, OrderControlContainer, AddressInput, WrapMomentOption } from './styles'
 
 import NavBar from '../../../../../components/NavBar'
 import { colors } from '../../../../../theme.json'
@@ -60,46 +60,45 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
   }
 
   return (
-    <>
-      <ScrollView style={styles.container} onScroll={(e) => handleScroll(e)}>
-        {!auth && (
-          <NavBar
-            onActionLeft={() => navigation?.canGoBack() && navigation.goBack()}
-            showCall={false}
-            btnStyle={{ paddingLeft: 0 }}
-            style={{ paddingBottom: 0 }}
+    <BusinessListContainer>
+      {!auth && (
+        <NavBar
+          onActionLeft={() => navigation?.canGoBack() && navigation.goBack()}
+          showCall={false}
+          btnStyle={{ paddingLeft: 0 }}
+          style={{ paddingBottom: 0 }}
+        />
+      )}
+      <OrderControlContainer>
+        <AddressInput
+          onPress={() => auth
+            ? navigation.navigate('AddressList', { isFromBusinesses: true })
+            : navigation.navigate('AddressForm', { address: orderState.options?.address,isFromBusinesses: true  })}
+        >
+          <OText size={16} numberOfLines={1}>
+            {orderState?.options?.address?.address}
+          </OText>
+          <MaterialIcon
+            name='keyboard-arrow-down'
+            color={colors.primary}
+            size={20}
+            style={{ marginRight: 10 }}
           />
-        )}
-        <OrderControlContainer>
-          <AddressInput
-            onPress={() => auth
-              ? navigation.navigate('AddressList', { isFromBusinesses: true })
-              : navigation.navigate('AddressForm', { address: orderState.options?.address,isFromBusinesses: true  })}
+        </AddressInput>
+        <View style={styles.wrapperOrderOptions}>
+          <OrderTypeSelector configTypes={configTypes} />
+          <WrapMomentOption
+            onPress={() => setOpenMomentOption(true)}
           >
-            <OText size={16} numberOfLines={1}>
-              {orderState?.options?.address?.address}
+            <OText size={14} color={colors.white} numberOfLines={1} ellipsizeMode='tail'>
+              {orderState.options?.moment
+                ? parseDate(orderState.options?.moment, { outputFormat: configs?.format_time?.value === '12' ? 'MM/DD hh:mma' : 'MM/DD HH:mm' })
+                : t('ASAP_ABBREVIATION', 'ASAP')}
             </OText>
-            <MaterialIcon
-              name='keyboard-arrow-down'
-              color={colors.primary}
-              size={20}
-              style={{ marginRight: 10 }}
-            />
-          </AddressInput>
-          <View style={styles.wrapperOrderOptions}>
-            <OrderTypeSelector configTypes={configTypes} />
-            <WrapMomentOption
-              onPress={() => setOpenMomentOption(true)}
-            >
-              <OText size={14} color={colors.white} numberOfLines={1} ellipsizeMode='tail'>
-                {orderState.options?.moment
-                  ? parseDate(orderState.options?.moment, { outputFormat: configs?.format_time?.value === '12' ? 'MM/DD hh:mma' : 'MM/DD HH:mm' })
-                  : t('ASAP_ABBREVIATION', 'ASAP')}
-              </OText>
-            </WrapMomentOption>
-          </View>
-        </OrderControlContainer>
-
+          </WrapMomentOption>
+        </View>
+      </OrderControlContainer>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.container} onScroll={(e) => handleScroll(e)}>
         <Search>
           <SearchBar
             onSearch={handleChangeSearch}
@@ -165,19 +164,14 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
           onClose={() => setOpenMomentOption(false)}
         />
       </OBottomPopup>
-    </>
+    </BusinessListContainer>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     marginBottom: 20
-  },
-  welcome: {
-    flex: 1,
-    flexDirection: 'row'
   },
   wrapperOrderOptions: {
     width: '100%',
