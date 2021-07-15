@@ -3,7 +3,6 @@ import { colors } from '../../../../../theme.json'
 
 export const Card = styled.TouchableOpacity`
   margin-vertical: 20px;
-  border-radius: 25px;
   flex: 1;
   width: 100%;
 `
@@ -11,7 +10,6 @@ export const Card = styled.TouchableOpacity`
 export const BusinessHero = styled.ImageBackground`
   height: 180px;
   resize-mode: cover;
-  border-radius: 25px;
   flex-direction: row;
   position: relative;
 `

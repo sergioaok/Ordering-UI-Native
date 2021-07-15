@@ -168,7 +168,6 @@ export interface BusinessProductsCategoriesParams {
   categories: Array<any>;
   // handlerClickCategory: any;
   onClickCategory: any;
-  openBusinessInformation: any;
   categorySelected: any;
   featured: boolean;
   loading?: any;

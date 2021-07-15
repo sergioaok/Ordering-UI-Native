@@ -51,6 +51,9 @@ export const BusinessControllerUI = (props: BusinessControllerParams) => {
         source={{ uri: optimizeImage(business?.header, 'h_400,c_limit') }}
         isClosed={isBusinessOpen || isBusinessClose}
       >
+        <BusinessLogo>
+          <OIcon url={optimizeImage(business?.logo, 'h_300,c_limit')} style={styles.businessLogo} />
+        </BusinessLogo>
         {business?.featured && (
           <View style={styles.featured}>
             <FontAwesomeIcon name='crown' size={16} color='gold' />
@@ -66,9 +69,6 @@ export const BusinessControllerUI = (props: BusinessControllerParams) => {
             <OText size={32} color={colors.white}>{businessWillCloseSoonMinutes} {t('MINUTES_TO_CLOSE', 'minutes to close')}</OText>
           </View>
         )}
-        <BusinessLogo>
-          <OIcon url={optimizeImage(business?.logo, 'h_300,c_limit')} style={styles.businessLogo} />
-        </BusinessLogo>
         <BusinessState>
           {!isBusinessOpen && (
             <View style={styles.businessStateView}>
@@ -174,9 +174,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.backgroundDark,
-    opacity: 0.6,
-    borderTopRightRadius: 25,
-    borderTopLeftRadius: 25,
+    opacity: 0.6
   },
   bullet: {
     flexDirection: 'row',
