@@ -170,8 +170,7 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginBottom: 20
+    flex: 1
   },
   wrapperOrderOptions: {
     width: '100%',
