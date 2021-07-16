@@ -8,7 +8,7 @@ export const BusinessHeader = styled.ImageBackground`
   width: 100%;
   height: 100%;
   position: relative;
-  max-height: 260px;
+  max-height: 200px;
   resize-mode: cover;
   min-height: 200px;
 `

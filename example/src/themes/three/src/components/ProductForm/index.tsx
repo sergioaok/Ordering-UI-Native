@@ -104,7 +104,7 @@ export const ProductOptionsUI = (props: any) => {
               {loading && !product ? (
                 <View style={styles.productHeaderSkeleton}>
                   <Placeholder Animation={Fade} >
-                    <PlaceholderLine height={260} style={{ borderRadius: 0 }} width={windowWidth} />
+                    <PlaceholderLine height={300} style={{ borderRadius: 0 }} width={windowWidth} />
                   </Placeholder>
                 </View>
               ) : (
