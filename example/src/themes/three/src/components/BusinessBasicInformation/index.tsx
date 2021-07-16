@@ -64,95 +64,94 @@ export const BusinessBasicInformation = (props: BusinessBasicInformationParams) 
           )}
         </BusinessLogo>
       </BusinessHeader>
-      <BusinessInfo style={styles.businessInfo}>
-        <View>
-          <BusinessInfoItem>
-            {loading ? (
-              <Placeholder Animation={Fade}>
-                <PlaceholderLine height={30} width={20} />
-              </Placeholder>
-            ) : (
-              <View style={{ maxWidth: '75%', justifyContent: 'flex-start' }}>
-                <OText
-                  size={20}
-                  weight='bold'
-                  numberOfLines={1}
-                  ellipsizeMode='tail'
-                >
-                  {business?.name}
-                </OText>
-              </View>
-            )}
-          </BusinessInfoItem>
+      <BusinessInfo>
+        <BusinessInfoItem>
           {loading ? (
             <Placeholder Animation={Fade}>
-              <PlaceholderLine width={10} />
+              <PlaceholderLine height={30} width={20} />
             </Placeholder>
           ) : (
-            <View style={{width: '75%'}}>
-              <OText color={colors.textSecondary}>{getBusinessType()}</OText>
+            <View style={{ maxWidth: '75%', justifyContent: 'flex-start' }}>
+              <OText
+                size={20}
+                weight='bold'
+                numberOfLines={1}
+                ellipsizeMode='tail'
+              >
+                {business?.name}
+              </OText>
             </View>
           )}
-          <BusinessInfoItem>
-            {loading && (
-              <Placeholder Animation={Fade}>
-                <View style={{ flexDirection: 'row' }}>
-                  <PlaceholderLine width={13} style={{ marginRight: 10 }} />
-                  <PlaceholderLine width={13} style={{ marginRight: 10 }} />
-                  <PlaceholderLine width={13} />
-                </View>
-              </Placeholder>
+        </BusinessInfoItem>
+        <WrapReviews>
+          <View style={styles.reviewStyle}>
+            <IconAntDesign
+              name="star"
+              color={colors.primary}
+              size={16}
+              style={styles.starIcon}
+            />
+            <OText size={14} weight={500} color={colors.black}>{business?.reviews?.total}</OText>
+            <OText size={14} style={{ marginHorizontal: 10 }}>({business?.reviews?.reviews.length} {t('REVIEWS', 'Reviews')})</OText>
+          </View>
+          {!isBusinessInfoShow && (
+            <TouchableOpacity onPress={() => setOpenBusinessReviews(true)}>
+              <OText color={colors.primary}>{t('SEE_REVIEWS', 'See reviews')}</OText>
+            </TouchableOpacity>
+          )}
+        </WrapReviews>
+        {loading ? (
+          <Placeholder Animation={Fade}>
+            <PlaceholderLine width={10} />
+          </Placeholder>
+        ) : (
+          <View style={{width: '75%'}}>
+            <OText color={colors.textSecondary}>{getBusinessType()}</OText>
+          </View>
+        )}
+        <BusinessInfoItem>
+          {loading && (
+            <Placeholder Animation={Fade}>
+              <View style={{ flexDirection: 'row' }}>
+                <PlaceholderLine width={13} style={{ marginRight: 10 }} />
+                <PlaceholderLine width={13} style={{ marginRight: 10 }} />
+                <PlaceholderLine width={13} />
+              </View>
+            </Placeholder>
+          )}
+          <View style={styles.bullet}>
+            <IconEvilIcons
+              name='clock'
+              color={colors.textSecondary}
+              size={16}
+            />
+            {orderState?.options?.type === 1 ? (
+              <OText color={colors.textSecondary} style={styles.metadata}>
+                {convertHoursToMinutes(business?.delivery_time)}
+              </OText>
+            ) : (
+              <OText color={colors.textSecondary} style={styles.metadata}>
+                {convertHoursToMinutes(business?.pickup_time)}
+              </OText>
             )}
-            <View style={styles.bullet}>
-              <IconEvilIcons
-                name='clock'
-                color={colors.textSecondary}
-                size={16}
-              />
-              {orderState?.options?.type === 1 ? (
-                <OText color={colors.textSecondary} style={styles.metadata}>
-                  {convertHoursToMinutes(business?.delivery_time)}
-                </OText>
-              ) : (
-                <OText color={colors.textSecondary} style={styles.metadata}>
-                  {convertHoursToMinutes(business?.pickup_time)}
-                </OText>
-              )}
-            </View>
-            <View style={styles.bullet}>
-              <IconEvilIcons
-                name='location'
-                color={colors.textSecondary}
-                size={16}
-              />
-              <OText color={colors.textSecondary} style={styles.metadata}>{parseDistance(business?.distance || 0)}</OText>
-            </View>
-            <View style={styles.bullet}>
-              <MaterialComIcon
-                name='truck-delivery'
-                color={colors.textSecondary}
-                size={16}
-              />
-            </View>
-            <OText color={colors.textSecondary} style={styles.metadata}>{business && parsePrice(business?.delivery_price || 0)}</OText>
-          </BusinessInfoItem>
-        </View>
-          <WrapReviews>
-            <View style={styles.reviewStyle}>
-              <IconAntDesign
-                name="star"
-                color={colors.primary}
-                size={16}
-                style={styles.starIcon}
-              />
-              <OText size={20} color={colors.textSecondary}>{business?.reviews?.total}</OText>
-            </View>
-            {!isBusinessInfoShow && (
-              <TouchableOpacity onPress={() => setOpenBusinessReviews(true)}>
-                <OText color={colors.primary}>{t('SEE_REVIEWS', 'See reviews')}</OText>
-              </TouchableOpacity>
-            )}
-          </WrapReviews>
+          </View>
+          <View style={styles.bullet}>
+            <IconEvilIcons
+              name='location'
+              color={colors.textSecondary}
+              size={16}
+            />
+            <OText color={colors.textSecondary} style={styles.metadata}>{parseDistance(business?.distance || 0)}</OText>
+          </View>
+          <View style={styles.bullet}>
+            <MaterialComIcon
+              name='truck-delivery'
+              color={colors.textSecondary}
+              size={16}
+            />
+          </View>
+          <OText color={colors.textSecondary} style={styles.metadata}>{business && parsePrice(business?.delivery_price || 0)}</OText>
+        </BusinessInfoItem>
       </BusinessInfo>
       <OModal
         titleSectionStyle={styles.modalTitleSectionStyle}
@@ -198,12 +197,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-  },
-  businessInfo: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20
   },
   bullet: {
     flexDirection: 'row',

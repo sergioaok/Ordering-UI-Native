@@ -18,17 +18,18 @@ export const BusinessLogo = styled.View`
   align-self: flex-end;
 `
 export const BusinessInfo = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   background-color: ${colors.backgroundPage};
+  padding-horizontal: 20px;
+  padding-top: 20px;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
 `
 export const BusinessInfoItem = styled.View`
   flex-direction: row;
   align-items: center;
 `
 export const WrapReviews = styled.View`
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
 `
