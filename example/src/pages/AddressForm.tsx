@@ -6,7 +6,6 @@ import { AddressForm as AddressFormController } from '../themes/three/src/compon
 import { SafeAreaContainer } from '../layouts/SafeAreaContainer'
 import { _retrieveStoreData } from '../providers/StoreUtil';
 
-
 const KeyboardView = styled.KeyboardAvoidingView`
   flex-grow: 1;
   flex-shrink: 1;
@@ -14,8 +13,8 @@ const KeyboardView = styled.KeyboardAvoidingView`
 
 const AddressForm = ({ navigation, route }: any) => {
   const AddressFormProps = {
-    navigation: navigation,
-    route: route,
+    navigation,
+    route,
     address: route?.params?.address,
     addressId: route?.params?.address?.id,
     isEditing: route?.params?.isEditing,
