@@ -1,32 +1,38 @@
 import React, { useState } from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import {
   BusinessAndProductList,
   useLanguage,
   useOrder,
   useSession,
-  useUtils
+  useUtils,
+  useConfig
 } from 'ordering-components/native'
-import { OButton, OModal, OText } from '../../../../../components/shared'
+import { OModal, OText } from '../../../../../components/shared'
 import { BusinessBasicInformation } from '../BusinessBasicInformation'
 import { SearchBar } from '../SearchBar'
 import { BusinessProductsCategories } from '../../../../../components/BusinessProductsCategories'
 import { BusinessProductsList } from '../BusinessProductsList'
 import { BusinessProductsListingParams } from '../../../../../types'
+import { OrderTypeSelector } from '../OrderTypeSelector'
+import { FloatingButton } from '../FloatingButton'
+import { ProductForm } from '../ProductForm'
+import { UpsellingProducts } from '../../../../../components/UpsellingProducts'
+import { BusinessInformation } from '../../../../../components/BusinessInformation'
+import { useTheme } from 'styled-components/native'
+
 import {
   WrapHeader,
   TopHeader,
   AddressInput,
   WrapSearchBar,
   WrapContent,
-  BusinessProductsListingContainer
+  BusinessProductsListingContainer,
+  WrapperOrderTypeSelector,
+  WrapBusinesssProductsCategories
 } from './styles'
-import { FloatingButton } from '../../../../../components/FloatingButton'
-import { ProductForm } from '../../../../../components/ProductForm'
-import { UpsellingProducts } from '../../../../../components/UpsellingProducts'
-import { BusinessInformation } from '../../../../../components/BusinessInformation'
-import { useTheme } from 'styled-components/native'
 
 const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
   const {
@@ -90,12 +96,15 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
   const [{ auth }] = useSession()
   const [orderState] = useOrder()
   const [{ parsePrice }] = useUtils()
+  const [{ configs }] = useConfig()
+
   const { business, loading, error } = businessState
   const [openBusinessInformation, setOpenBusinessInformation] = useState(false)
   const [isOpenSearchBar, setIsOpenSearchBar] = useState(false)
   const [curProduct, setCurProduct] = useState(null)
   const [openUpselling, setOpenUpselling] = useState(false)
   const [canOpenUpselling, setCanOpenUpselling] = useState(false)
+  const configTypes = configs?.order_types_allowed?.value.split('|').map((value: any) => Number(value)) || []
 
   const currentCart: any = Object.values(orderState.carts).find((cart: any) => cart?.business?.slug === business?.slug) ?? {}
 
@@ -135,6 +144,7 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
   return (
     <>
       <BusinessProductsListingContainer
+        stickyHeaderIndices={[2]}
         style={styles.mainContainer}
         isActiveFloatingButtom={currentCart?.products?.length > 0 && categoryState.products.length !== 0}
       >
@@ -174,41 +184,43 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
               </View>
             </TopHeader>
           )}
-          
-          {/* {!errorQuantityProducts && (
-            <View style={{ ...styles.headerItem }}>
-              <TouchableOpacity
-                onPress={() => setIsOpenSearchBar(true)}
-                style={styles.searchIcon}
-              >
-                <MaterialIcon
-                  name='search'
-                  color={colors.white}
-                  size={25}
-                />
-              </TouchableOpacity>
-            </View>
-          )}
-          {isOpenSearchBar && (
-            <WrapSearchBar>
-              <SearchBar
-                onSearch={handleChangeSearch}
-                onCancel={() => handleCancel()}
-                isCancelXButtonShow
-                noBorderShow
-                placeholder={t('SEARCH_PRODUCTS', 'Search Products')}
-                lazyLoad={businessState?.business?.lazy_load_products_recommended}
-              />
-            </WrapSearchBar>
-          )}  */}
+
           <BusinessBasicInformation
             businessState={businessState}
             header={header}
             logo={logo}
           />
         </WrapHeader>
+        {!isOpenSearchBar ? (
+          <WrapperOrderTypeSelector>
+            <OrderTypeSelector configTypes={configTypes} />
+            {!errorQuantityProducts && (
+              <TouchableOpacity
+                onPress={() => setIsOpenSearchBar(true)}
+              >
+                <MaterialIcon
+                  name='search'
+                  color={theme.colors.black}
+                  size={25}
+                />
+              </TouchableOpacity>
+            )}
+          </WrapperOrderTypeSelector>
+        ) : (
+          <WrapSearchBar>
+            <SearchBar
+              onSearch={handleChangeSearch}
+              onCancel={() => handleCancel()}
+              isCancelXButtonShow
+              noBorderShow
+              placeholder={t('SEARCH_PRODUCTS', 'Search Products')}
+              lazyLoad={businessState?.business?.lazy_load_products_recommended}
+            />
+          </WrapSearchBar>
+        )}
+
         {!loading && business?.id && (
-          <>
+          <WrapBusinesssProductsCategories>
             {!(business?.categories?.length === 0) && (
               <BusinessProductsCategories
                 categories={[{ id: null, name: t('ALL', 'All') }, { id: 'featured', name: t('FEATURED', 'Featured') }, ...business?.categories.sort((a: any, b: any) => a.rank - b.rank)]}
@@ -217,6 +229,11 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
                 featured={featuredProducts}
               />
             )}
+          </WrapBusinesssProductsCategories>
+        )}
+        
+        {!loading && business?.id && (
+          <>
             <WrapContent>
               <BusinessProductsList
                 categories={[

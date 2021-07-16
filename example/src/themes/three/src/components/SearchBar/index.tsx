@@ -43,6 +43,10 @@ export const SearchBar = (props: any) => {
       maxHeight: 40,
       paddingRight: 5,
       paddingLeft: 5,
+    },
+    cancelBtnStyle: {
+      position: 'absolute',
+      right: 10
     }
   })
 
@@ -88,6 +92,7 @@ export const SearchBar = (props: any) => {
       {isCancelXButtonShow && (
         <TouchableOpacity
           onPress={onCancel || handleClear}
+          style={styles.cancelBtnStyle}
         >
           <Icon
             name='x-circle'

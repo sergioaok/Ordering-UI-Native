@@ -1,6 +1,6 @@
 import React from 'react'
 import { ProductsList, useLanguage } from 'ordering-components/native'
-import { SingleProductCard } from '../../../../../components/SingleProductCard'
+import { SingleProductCard } from '../SingleProductCard'
 import { NotFoundSource } from '../../../../../components/NotFoundSource'
 import { BusinessProductsListParams } from '../../../../../types'
 import { OText } from '../../../../../components/shared'
@@ -74,7 +74,7 @@ const BusinessProductsListUI = (props: BusinessProductsListParams) => {
               {
                 products.length > 0 && (
                   <>
-                    <OText size={18} weight='bold' mBottom={10}>{category.name}</OText>
+                    <OText size={18} weight='600' mBottom={10}>{category.name}</OText>
                     <>
                       {
                         products.map((product: any) => (
@@ -102,11 +102,11 @@ const BusinessProductsListUI = (props: BusinessProductsListParams) => {
             {[...Array(categoryState?.pagination?.nextPageItems).keys()].map((item, i) => (
               <Placeholder key={i} style={{ padding: 5 }} Animation={Fade}>
                 <View style={{ flexDirection: 'row' }}>
-                  <PlaceholderLine width={24} height={70} style={{ marginRight: 10, marginBottom: 10 }} />
                   <Placeholder style={{ paddingVertical: 10 }}>
-                      <PlaceholderLine width={60} style={{marginBottom: 25}}/>
-                      <PlaceholderLine width={20} />
+                    <PlaceholderLine width={60} style={{marginBottom: 25}}/>
+                    <PlaceholderLine width={20} />
                   </Placeholder>
+                  <PlaceholderLine width={24} height={70} style={{ marginRight: 10, marginBottom: 10 }} />
                 </View>
               </Placeholder>
             ))}

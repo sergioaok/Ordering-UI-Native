@@ -26,9 +26,16 @@ export const BusinessInfo = styled.View`
 `
 export const BusinessInfoItem = styled.View`
   flex-direction: row;
-  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
 `
 export const WrapReviews = styled.View`
   flex-direction: row;
   align-items: center;
+  margin-vertical: 6px;
+`
+
+export const VerticalLine = styled.View`
+  width: 1px;
+  background-color: ${(props: any) => props.theme.colors.gray};
 `

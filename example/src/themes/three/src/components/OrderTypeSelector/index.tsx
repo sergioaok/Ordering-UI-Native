@@ -29,7 +29,7 @@ const OrderTypeSelectorUI = (props: OrderTypeSelectParams) => {
       borderColor: 'transparent',
       borderRadius: 10,
       paddingHorizontal: 20,
-      backgroundColor: theme.colors.inputDisabled,
+      backgroundColor: theme.colors.mediumGray,
       fontSize: 15
     },
     inputIOS: {
@@ -39,7 +39,7 @@ const OrderTypeSelectorUI = (props: OrderTypeSelectParams) => {
       borderColor: 'transparent',
       borderRadius: 30,
       paddingHorizontal: 20,
-      backgroundColor: theme.colors.inputDisabled,
+      backgroundColor: theme.colors.mediumGray,
       fontSize: 15
     },
     icon: {

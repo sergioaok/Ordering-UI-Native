@@ -17,7 +17,8 @@ import {
   BusinessLogo,
   BusinessInfo,
   BusinessInfoItem,
-  WrapReviews
+  WrapReviews,
+  VerticalLine
 } from './styles'
 import { Fade, Placeholder, PlaceholderLine } from 'rn-placeholder';
 const types = ['food', 'laundry', 'alcohol', 'groceries']
@@ -91,14 +92,13 @@ export const BusinessBasicInformation = (props: BusinessBasicInformationParams) 
               name='star'
               color={theme.colors.primary}
               size={16}
-              style={styles.starIcon}
             />
-            <OText size={14} weight={500} color={theme.colors.black}>{business?.reviews?.total}</OText>
-            <OText size={14} style={{ marginHorizontal: 10 }}>({business?.reviews?.reviews.length} {t('REVIEWS', 'Reviews')})</OText>
+            <OText size={14} weight={500} style={{ paddingHorizontal: 10 }} color={theme.colors.black}>{business?.reviews?.total}</OText>
+            <OText size={14}>({business?.reviews?.reviews.length} {t('REVIEWS', 'Reviews')})</OText>
           </View>
           {!isBusinessInfoShow && (
             <TouchableOpacity onPress={() => setOpenBusinessReviews(true)}>
-              <OText color={theme.colors.primary}>{t('SEE_REVIEWS', 'See reviews')}</OText>
+              <OText color={theme.colors.green} mLeft={10}>{t('SEE_REVIEWS', 'See reviews')}</OText>
             </TouchableOpacity>
           )}
         </WrapReviews>
@@ -112,47 +112,52 @@ export const BusinessBasicInformation = (props: BusinessBasicInformationParams) 
           </View>
         )}
         <BusinessInfoItem>
-          {loading && (
+          {loading ? (
             <Placeholder Animation={Fade}>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <PlaceholderLine width={13} style={{ marginRight: 10 }} />
                 <PlaceholderLine width={13} style={{ marginRight: 10 }} />
                 <PlaceholderLine width={13} />
               </View>
             </Placeholder>
+          ) : (
+            <>
+              <View style={styles.bullet}>
+                <IconEvilIcons
+                  name='clock'
+                  color={theme.colors.textSecondary}
+                  size={16}
+                />
+                {orderState?.options?.type === 1 ? (
+                  <OText color={theme.colors.textSecondary} style={styles.metadata}>
+                    {convertHoursToMinutes(business?.delivery_time)}
+                  </OText>
+                ) : (
+                  <OText color={theme.colors.textSecondary} style={styles.metadata}>
+                    {convertHoursToMinutes(business?.pickup_time)}
+                  </OText>
+                )}
+              </View>
+              <VerticalLine />
+              <View style={styles.bullet}>
+                <IconEvilIcons
+                  name='location'
+                  color={theme.colors.textSecondary}
+                  size={16}
+                />
+                <OText color={theme.colors.textSecondary} style={styles.metadata}>{parseDistance(business?.distance || 0)}</OText>
+              </View>
+              <VerticalLine />
+              <View style={styles.bullet}>
+                <MaterialComIcon
+                  name='truck-delivery'
+                  color={theme.colors.textSecondary}
+                  size={16}
+                />
+                <OText color={theme.colors.textSecondary} style={styles.metadata}>{business && parsePrice(business?.delivery_price || 0)}</OText>
+              </View>
+            </>
           )}
-          <View style={styles.bullet}>
-            <IconEvilIcons
-              name='clock'
-              color={theme.colors.textSecondary}
-              size={16}
-            />
-            {orderState?.options?.type === 1 ? (
-              <OText color={theme.colors.textSecondary} style={styles.metadata}>
-                {convertHoursToMinutes(business?.delivery_time)}
-              </OText>
-            ) : (
-              <OText color={theme.colors.textSecondary} style={styles.metadata}>
-                {convertHoursToMinutes(business?.pickup_time)}
-              </OText>
-            )}
-          </View>
-          <View style={styles.bullet}>
-            <IconEvilIcons
-              name='location'
-              color={theme.colors.textSecondary}
-              size={16}
-            />
-            <OText color={theme.colors.textSecondary} style={styles.metadata}>{parseDistance(business?.distance || 0)}</OText>
-          </View>
-          <View style={styles.bullet}>
-            <MaterialComIcon
-              name='truck-delivery'
-              color={theme.colors.textSecondary}
-              size={16}
-            />
-          </View>
-          <OText color={theme.colors.textSecondary} style={styles.metadata}>{business && parsePrice(business?.delivery_price || 0)}</OText>
         </BusinessInfoItem>
       </BusinessInfo>
       <OModal
@@ -207,9 +212,6 @@ const styles = StyleSheet.create({
   metadata: {
     marginRight: 20,
     marginLeft: 5,
-  },
-  starIcon: {
-    marginHorizontal: 5,
   },
   reviewStyle: {
     flexDirection: 'row',
