@@ -1,5 +1,4 @@
 import styled from 'styled-components/native'
-import { colors } from '../../../../../theme.json'
 
 export const Card = styled.TouchableOpacity`
   margin-vertical: 20px;
@@ -47,7 +46,7 @@ export const Reviews = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: ${colors.backgroundGray};
+  background-color: ${(props: any) => props.theme.colors.backgroundGray};
   height: 40px;
   width: 40px;
   border-radius: 100px;
@@ -55,5 +54,5 @@ export const Reviews = styled.View`
 
 export const VerticalLine = styled.View`
   width: 1px;
-  background-color: ${colors.gray};
+  background-color: ${(props: any) => props.theme.colors.gray};
 `

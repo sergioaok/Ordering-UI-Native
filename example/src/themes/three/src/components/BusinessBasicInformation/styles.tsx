@@ -1,5 +1,4 @@
 import styled from 'styled-components/native'
-import { colors } from '../../../../../theme.json'
 
 export const BusinessContainer = styled.View`
   flex-direction: column;
@@ -19,7 +18,7 @@ export const BusinessLogo = styled.View`
 `
 export const BusinessInfo = styled.View`
   flex-direction: column;
-  background-color: ${colors.backgroundPage};
+  background-color: ${(props: any) => props.theme.colors.backgroundPage};
   padding-horizontal: 20px;
   padding-top: 20px;
   border-top-right-radius: 20px;

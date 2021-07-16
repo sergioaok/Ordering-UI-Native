@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Fade, Placeholder, PlaceholderLine } from 'rn-placeholder'
 import { View, StyleSheet, ScrollView, Platform, PanResponder, I18nManager } from 'react-native'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
@@ -8,13 +8,14 @@ import {
   useSession,
   useOrder,
   useConfig,
-  useUtils
+  useUtils,
+  ToastType,
+  useToast
 } from 'ordering-components/native'
 
 import { BusinessListContainer, Divider, Search, OrderControlContainer, AddressInput, WrapMomentOption } from './styles'
 
 import NavBar from '../../../../../components/NavBar'
-import { colors } from '../../../../../theme.json'
 import { SearchBar } from '../SearchBar'
 import { OText, OBottomPopup } from '../../../../../components/shared'
 import { BusinessesListingParams } from '../../../../../types'
@@ -22,8 +23,8 @@ import { NotFoundSource } from '../../../../../components/NotFoundSource'
 import { BusinessTypeFilter } from '../BusinessTypeFilter'
 import { BusinessController } from '../BusinessController'
 import { OrderTypeSelector } from '../OrderTypeSelector'
-import { ToastType, useToast } from '../../../../../providers/ToastProvider'
 import { MomentOption } from '../MomentOption'
+import { useTheme } from 'styled-components/native'
 
 const PIXELS_TO_SCROLL = 1200
 
@@ -38,12 +39,35 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
     paginationProps,
     handleChangeSearch
   } = props
+
+  const theme = useTheme()
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1
+    },
+    wrapperOrderOptions: {
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 10,
+      zIndex: 100,
+      marginVertical: 15
+    },
+    borderStyle: {
+      borderColor: theme.colors.backgroundGray,
+      borderWidth: 1,
+      borderRadius: 10,
+    }
+  })
+
   const [, t] = useLanguage()
   const [{ user, auth }] = useSession()
   const [orderState] = useOrder()
   const [{ configs }] = useConfig()
   const [{ parseDate }] = useUtils()
-  const {showToast} = useToast()
+  const [, {showToast}] = useToast()
 
   const [openMomentOption, setOpenMomentOption] = useState(false)
   const configTypes = configs?.order_types_allowed?.value.split('|').map((value: any) => Number(value)) || []
@@ -80,7 +104,7 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
           </OText>
           <MaterialIcon
             name='keyboard-arrow-down'
-            color={colors.primary}
+            color={theme.colors.primary}
             size={20}
             style={{ marginRight: 10 }}
           />
@@ -90,7 +114,7 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
           <WrapMomentOption
             onPress={() => setOpenMomentOption(true)}
           >
-            <OText size={14} color={colors.white} numberOfLines={1} ellipsizeMode='tail'>
+            <OText size={14} color={theme.colors.white} numberOfLines={1} ellipsizeMode='tail'>
               {orderState.options?.moment
                 ? parseDate(orderState.options?.moment, { outputFormat: configs?.format_time?.value === '12' ? 'MM/DD hh:mma' : 'MM/DD HH:mm' })
                 : t('ASAP_ABBREVIATION', 'ASAP')}
@@ -167,26 +191,6 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
     </BusinessListContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  wrapperOrderOptions: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    zIndex: 100,
-    marginVertical: 15
-  },
-  borderStyle: {
-    borderColor: colors.backgroundGray,
-    borderWidth: 1,
-    borderRadius: 10,
-  }
-})
 
 export const BusinessesListing = (props: BusinessesListingParams) => {
 

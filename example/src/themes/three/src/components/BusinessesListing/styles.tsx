@@ -1,5 +1,4 @@
 import styled from 'styled-components/native'
-import { colors } from '../../../../../theme.json'
 
 export const BusinessListContainer = styled.View`
   flex: 1;
@@ -9,7 +8,7 @@ export const BusinessListContainer = styled.View`
 
 export const Divider = styled.View`
   height: 8px;
-  background-color: ${colors.backgroundGray};
+  background-color: ${(props: any) => props.theme.colors.backgroundGray};
 `
 
 export const BusinessList = styled.View`
@@ -42,7 +41,7 @@ export const OrderControlContainer = styled.View`
 `
 
 export const WrapMomentOption = styled.TouchableOpacity`
-  background-color: ${colors.primary};
+  background-color: ${(props: any) => props.theme.colors.primary};
   border-radius: 20px;
   margin-vertical: 5px;
   height: 40px;

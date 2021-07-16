@@ -22,11 +22,11 @@ import {
   WrapContent,
   BusinessProductsListingContainer
 } from './styles'
-import { colors, images } from '../../../../../theme.json'
 import { FloatingButton } from '../../../../../components/FloatingButton'
 import { ProductForm } from '../../../../../components/ProductForm'
 import { UpsellingProducts } from '../../../../../components/UpsellingProducts'
 import { BusinessInformation } from '../../../../../components/BusinessInformation'
+import { useTheme } from 'styled-components/native'
 
 const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
   const {
@@ -47,6 +47,44 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
     setProductLogin,
     updateProductModal
   } = props
+
+  const theme = useTheme()
+
+  const styles = StyleSheet.create({
+    mainContainer: {
+      flex: 1,
+    },
+    headerItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginVertical: 15,
+      marginHorizontal: 20,
+    },
+    iconBtn: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 0,
+      width: 40,
+      height: 40,
+      color: '#FFF',
+      backgroundColor: theme.colors.white,
+      borderRadius: 25,
+    },
+    searchIcon: {
+      borderWidth: 0,
+      color: '#FFF',
+      backgroundColor: 'rgba(0,0,0,0.3)',
+      borderRadius: 24,
+      padding: 15,
+      justifyContent: 'center'
+    },
+    modalTitleSectionStyle: {
+      position: 'absolute',
+      width: '100%',
+      top: 0,
+      zIndex: 100
+    }
+  })
 
   const [, t] = useLanguage()
   const [{ auth }] = useSession()
@@ -110,7 +148,7 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
                 >
                   <MaterialComIcon
                     name='arrow-left'
-                    color={colors.black}
+                    color={theme.colors.black}
                     size={24}
                   />
                 </TouchableOpacity>
@@ -119,7 +157,7 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
                     ? onRedirect('AddressList', { isGoBack: true, isFromProductsList: true })
                     : onRedirect('AddressForm', { address: orderState.options?.address })}
                 >
-                  <OText color={colors.black} numberOfLines={1}>
+                  <OText color={theme.colors.black} numberOfLines={1}>
                     {orderState?.options?.address?.address}
                   </OText>
                 </AddressInput>
@@ -129,7 +167,7 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
                 >
                   <MaterialComIcon
                     name='dots-horizontal'
-                    color={colors.black}
+                    color={theme.colors.black}
                     size={24}
                   />
                 </TouchableOpacity>
@@ -258,7 +296,7 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
         titleSectionStyle={styles.modalTitleSectionStyle}
         open={openBusinessInformation}
         onClose={() => setOpenBusinessInformation(false)}
-        styleCloseButton={{color: colors.white, backgroundColor: 'rgba(0,0,0,0.3)'}}
+        styleCloseButton={{color: theme.colors.white, backgroundColor: 'rgba(0,0,0,0.3)'}}
         isNotDecoration
       >
         <BusinessInformation
@@ -280,42 +318,6 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-  },
-  headerItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 15,
-    marginHorizontal: 20,
-  },
-  iconBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 0,
-    width: 40,
-    height: 40,
-    color: '#FFF',
-    backgroundColor: colors.white,
-    borderRadius: 25,
-  },
-  searchIcon: {
-    borderWidth: 0,
-    color: '#FFF',
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    borderRadius: 24,
-    padding: 15,
-    justifyContent: 'center'
-  },
-  modalTitleSectionStyle: {
-    position: 'absolute',
-    width: '100%',
-    top: 0,
-    zIndex: 100
-  }
-})
 
 export const BusinessProductsListing = (props: BusinessProductsListingParams) => {
   const businessProductslistingProps = {

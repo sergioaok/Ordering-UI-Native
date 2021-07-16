@@ -9,7 +9,9 @@ import {
   LoginForm as LoginFormController,
   useLanguage,
   useConfig,
-  useSession
+  useSession,
+  ToastType,
+  useToast
 } from 'ordering-components/native';
 
 import { FacebookLogin } from '../FacebookLogin';
@@ -25,18 +27,15 @@ import {
   OTab,
   SocialButtons,
   OrSeparator,
-  LineSeparator,
-  SkeletonWrapper
+  LineSeparator  
 } from './styles';
 
-import { ToastType, useToast } from '../../../../../providers/ToastProvider';
 import { _removeStoreData } from '../../../../../providers/StoreUtil';
 import NavBar from '../../../../../components/NavBar'
 
 import { OText, OButton, OInput, OModal } from '../../../../../components/shared';
 import { LoginParams } from '../../../../../types';
-import { colors, images } from '../../../../../theme.json'
-import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
+import { useTheme } from 'styled-components/native';
 
 const LoginFormUI = (props: LoginParams) => {
   const {
@@ -58,7 +57,33 @@ const LoginFormUI = (props: LoginParams) => {
     notificationState
   } = props
 
-  const { showToast } = useToast();
+  const theme = useTheme()
+
+  const loginStyle = StyleSheet.create({
+    btnOutline: {
+      backgroundColor: '#FFF',
+      color: theme.colors.primary,
+      borderRadius: 0
+    },
+    inputStyle: {
+      marginBottom: 25,
+      backgroundColor: theme.colors.backgroundGray,
+      borderRadius: 0
+    },
+    wrapperTxt: {
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent: 'space-between',
+      marginBottom: 8
+    },
+    linkTxt: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginBottom: 40
+    }
+  });
+
+  const [, { showToast }] = useToast()
   const [, t] = useLanguage()
   const [{ configs }] = useConfig()
   const [, { login }] = useSession()
@@ -196,7 +221,7 @@ const LoginFormUI = (props: LoginParams) => {
               {useLoginByEmail && (
                 <Pressable onPress={() => handleChangeTab('email')}>
                   <OTab>
-                    <OText size={16} color={loginTab === 'email' ? colors.primary : colors.disabled}>
+                    <OText size={16} color={loginTab === 'email' ? theme.colors.primary : theme.colors.disabled}>
                       {t('LOGIN_BY_EMAIL', 'Login by Email')}
                     </OText>
                   </OTab>
@@ -205,7 +230,7 @@ const LoginFormUI = (props: LoginParams) => {
               {useLoginByCellphone && (
                 <Pressable onPress={() => handleChangeTab('cellphone')}>
                   <OTab>
-                    <OText size={16} color={loginTab === 'cellphone' ? colors.primary : colors.disabled}>
+                    <OText size={16} color={loginTab === 'cellphone' ? theme.colors.primary : theme.colors.disabled}>
                       {t('LOGIN_BY_PHONE', 'Login by Phone')}
                     </OText>
                   </OTab>
@@ -276,7 +301,7 @@ const LoginFormUI = (props: LoginParams) => {
 
               {onNavigationRedirect && forgotButtonText && (
                 <Pressable onPress={() => onNavigationRedirect('Forgot')}>
-                  <OText size={14} color={colors.gray}>
+                  <OText size={14} color={theme.colors.gray}>
                     {forgotButtonText}
                   </OText>
                 </Pressable>
@@ -313,7 +338,7 @@ const LoginFormUI = (props: LoginParams) => {
                   {t('NEW_ON_PLATFORM', 'New on Ordering?')}
                 </OText>
                 <Pressable onPress={() => onNavigationRedirect('Signup')}>
-                  <OText size={14} color={colors.green}>
+                  <OText size={14} color={theme.colors.green}>
                     {registerButtonText}
                   </OText>
                 </Pressable>
@@ -323,8 +348,8 @@ const LoginFormUI = (props: LoginParams) => {
             <OButton
               onClick={handleSubmit(onSubmit)}
               text={loginButtonText}
-              bgColor={colors.primary}
-              borderColor={colors.primary}
+              bgColor={theme.colors.primary}
+              borderColor={theme.colors.primary}
               textStyle={{ color: 'white' }}
               style={{ borderRadius: 0 }}
               imgRightSrc={null}
@@ -352,11 +377,11 @@ const LoginFormUI = (props: LoginParams) => {
                 <OButton
                   onClick={handleVerifyCodeClick}
                   text={t('GET_VERIFY_CODE', 'Get Verify Code')}
-                  borderColor={colors.primary}
+                  borderColor={theme.colors.primary}
                   style={loginStyle.btnOutline}
                   imgRightSrc={null}
                   isLoading={isLoadingVerifyModal}
-                  indicatorColor={colors.primary}
+                  indicatorColor={theme.colors.primary}
                 />
               </ButtonsWrapper>
             </>
@@ -399,29 +424,6 @@ const LoginFormUI = (props: LoginParams) => {
   );
 };
 
-const loginStyle = StyleSheet.create({
-  btnOutline: {
-    backgroundColor: '#FFF',
-    color: colors.primary,
-    borderRadius: 0
-  },
-  inputStyle: {
-    marginBottom: 25,
-    backgroundColor: colors.backgroundGray,
-    borderRadius: 0
-  },
-  wrapperTxt: {
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between',
-    marginBottom: 8
-  },
-  linkTxt: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 40
-  }
-});
 
 export const LoginForm = (props: any) => {
   const loginProps = {

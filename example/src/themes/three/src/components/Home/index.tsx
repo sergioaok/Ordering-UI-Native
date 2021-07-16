@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLanguage, useOrder } from 'ordering-components/native';
+import { useTheme } from 'styled-components/native';
 import { StyleSheet, View, Dimensions, ImageBackground } from 'react-native';
-import { colors, images } from '../../../../../theme.json';
 import { OButton, OIcon, OText } from '../../../../../components/shared';
 import { LogoWrapper } from './styles';
 import { LanguageSelector } from '../LanguageSelector'
@@ -15,6 +15,7 @@ export const Home = (props: any) => {
     onNavigationRedirect
   } = props;
 
+  const theme = useTheme()
   const [, t] = useLanguage();
   const [orderState] = useOrder();
 
@@ -26,20 +27,20 @@ export const Home = (props: any) => {
   return (
     <View style={styles.container}>
       <View style={styles.wrapperContent}>
-        <ImageBackground source={images.general.homeHero} resizeMode='cover' style={styles.hero}>
+        <ImageBackground source={theme.images.general.homeHero} resizeMode='cover' style={styles.hero}>
           <View style={styles.languageSelector}>
             <LanguageSelector />
           </View>
           <LogoWrapper>
-            <OIcon src={images.logos.logotype} style={styles.logo} />
+            <OIcon src={theme.images.logos.logotype} style={styles.logo} />
           </LogoWrapper>
         </ImageBackground>
       </View>
       <View style={styles.wrapperBtn}>
         <OButton
           text={t('SIGN_IN', 'Sign in')}
-          bgColor={colors.primary}
-          borderColor={colors.primary}
+          bgColor={theme.colors.primary}
+          borderColor={theme.colors.primary}
           style={styles.buttons}
           textStyle={{ color: 'white' }}
           imgRightSrc={null}
@@ -47,8 +48,8 @@ export const Home = (props: any) => {
         />
         <OButton
           text={t('SIGNUP', 'Signup')}
-          bgColor={colors.white}
-          borderColor={colors.primary}
+          bgColor={theme.colors.white}
+          borderColor={theme.colors.primary}
           style={styles.buttons}
           onClick={() => onNavigationRedirect('Signup')}
         />

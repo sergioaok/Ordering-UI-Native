@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import IconAntDesign from 'react-native-vector-icons/AntDesign'
 import IconEvilIcons from 'react-native-vector-icons/EvilIcons'
 import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useUtils, useOrder, useLanguage } from 'ordering-components/native'
 import { OIcon, OText, OModal } from '../../../../../components/shared'
 import { BusinessBasicInformationParams } from '../../../../../types'
-import { colors } from '../../../../../theme.json'
+
+import { useTheme } from 'styled-components/native'
 import { convertHoursToMinutes } from '../../../../../utils'
 import { BusinessInformation } from '../../../../../components/BusinessInformation'
 import { BusinessReviews } from '../../../../../components/BusinessReviews'
@@ -30,6 +31,7 @@ export const BusinessBasicInformation = (props: BusinessBasicInformationParams) 
   } = props
   const { business, loading } = businessState
 
+  const theme = useTheme()
   const [orderState] = useOrder()
   const [, t] = useLanguage()
   const [{ parsePrice, parseDistance, optimizeImage }] = useUtils()
@@ -47,7 +49,7 @@ export const BusinessBasicInformation = (props: BusinessBasicInformationParams) 
   return (
     <BusinessContainer>
       <BusinessHeader
-        style={isBusinessInfoShow ? styles.businesInfoheaderStyle : { ...styles.headerStyle, backgroundColor: colors.backgroundGray }}
+        style={isBusinessInfoShow ? styles.businesInfoheaderStyle : { ...styles.headerStyle, backgroundColor: theme.colors.backgroundGray }}
         source={{ uri: header || optimizeImage(businessState?.business?.header, 'h_400,c_limit') }}
       >
         <BusinessLogo>
@@ -86,17 +88,17 @@ export const BusinessBasicInformation = (props: BusinessBasicInformationParams) 
         <WrapReviews>
           <View style={styles.reviewStyle}>
             <IconAntDesign
-              name="star"
-              color={colors.primary}
+              name='star'
+              color={theme.colors.primary}
               size={16}
               style={styles.starIcon}
             />
-            <OText size={14} weight={500} color={colors.black}>{business?.reviews?.total}</OText>
+            <OText size={14} weight={500} color={theme.colors.black}>{business?.reviews?.total}</OText>
             <OText size={14} style={{ marginHorizontal: 10 }}>({business?.reviews?.reviews.length} {t('REVIEWS', 'Reviews')})</OText>
           </View>
           {!isBusinessInfoShow && (
             <TouchableOpacity onPress={() => setOpenBusinessReviews(true)}>
-              <OText color={colors.primary}>{t('SEE_REVIEWS', 'See reviews')}</OText>
+              <OText color={theme.colors.primary}>{t('SEE_REVIEWS', 'See reviews')}</OText>
             </TouchableOpacity>
           )}
         </WrapReviews>
@@ -105,8 +107,8 @@ export const BusinessBasicInformation = (props: BusinessBasicInformationParams) 
             <PlaceholderLine width={10} />
           </Placeholder>
         ) : (
-          <View style={{width: '75%'}}>
-            <OText color={colors.textSecondary}>{getBusinessType()}</OText>
+          <View style={{ width: '75%' }}>
+            <OText color={theme.colors.textSecondary}>{getBusinessType()}</OText>
           </View>
         )}
         <BusinessInfoItem>
@@ -122,15 +124,15 @@ export const BusinessBasicInformation = (props: BusinessBasicInformationParams) 
           <View style={styles.bullet}>
             <IconEvilIcons
               name='clock'
-              color={colors.textSecondary}
+              color={theme.colors.textSecondary}
               size={16}
             />
             {orderState?.options?.type === 1 ? (
-              <OText color={colors.textSecondary} style={styles.metadata}>
+              <OText color={theme.colors.textSecondary} style={styles.metadata}>
                 {convertHoursToMinutes(business?.delivery_time)}
               </OText>
             ) : (
-              <OText color={colors.textSecondary} style={styles.metadata}>
+              <OText color={theme.colors.textSecondary} style={styles.metadata}>
                 {convertHoursToMinutes(business?.pickup_time)}
               </OText>
             )}
@@ -138,26 +140,26 @@ export const BusinessBasicInformation = (props: BusinessBasicInformationParams) 
           <View style={styles.bullet}>
             <IconEvilIcons
               name='location'
-              color={colors.textSecondary}
+              color={theme.colors.textSecondary}
               size={16}
             />
-            <OText color={colors.textSecondary} style={styles.metadata}>{parseDistance(business?.distance || 0)}</OText>
+            <OText color={theme.colors.textSecondary} style={styles.metadata}>{parseDistance(business?.distance || 0)}</OText>
           </View>
           <View style={styles.bullet}>
             <MaterialComIcon
               name='truck-delivery'
-              color={colors.textSecondary}
+              color={theme.colors.textSecondary}
               size={16}
             />
           </View>
-          <OText color={colors.textSecondary} style={styles.metadata}>{business && parsePrice(business?.delivery_price || 0)}</OText>
+          <OText color={theme.colors.textSecondary} style={styles.metadata}>{business && parsePrice(business?.delivery_price || 0)}</OText>
         </BusinessInfoItem>
       </BusinessInfo>
       <OModal
         titleSectionStyle={styles.modalTitleSectionStyle}
         open={openBusinessInformation}
         onClose={() => setOpenBusinessInformation(false)}
-        styleCloseButton={{color: colors.white, backgroundColor: 'rgba(0,0,0,0.3)'}}
+        styleCloseButton={{color: theme.colors.white, backgroundColor: 'rgba(0,0,0,0.3)'}}
         isNotDecoration
       >
         <BusinessInformation
@@ -169,7 +171,7 @@ export const BusinessBasicInformation = (props: BusinessBasicInformationParams) 
         titleSectionStyle={styles.modalTitleSectionStyle}
         open={openBusinessReviews}
         onClose={() => setOpenBusinessReviews(false)}
-        styleCloseButton={{color: colors.white, backgroundColor: 'rgba(0,0,0,0.3)'}}
+        styleCloseButton={{color: theme.colors.white, backgroundColor: 'rgba(0,0,0,0.3)'}}
         isNotDecoration
       >
         <BusinessReviews

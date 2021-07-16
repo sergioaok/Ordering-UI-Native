@@ -1,18 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { StyleSheet, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from 'react-native'
-import { AddressForm as AddressFormController, useLanguage, useConfig, useSession, useOrder } from 'ordering-components/native'
+import { AddressForm as AddressFormController, useLanguage, useConfig, useSession, useOrder, ToastType, useToast } from 'ordering-components/native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { useForm, Controller } from 'react-hook-form';
 import Geocoder from 'react-native-geocoding';
+import { useTheme } from 'styled-components/native';
 
-import { ToastType, useToast } from '../../../../../providers/ToastProvider';
 import { _retrieveStoreData } from '../../../../../providers/StoreUtil';
 import { OInput, OButton, OText, OModal } from '../../../../../components/shared'
 import { AddressFormParams } from '../../../../../types'
 import { getTraduction } from '../../../../../utils'
-import { colors } from '../../../../../theme.json'
 import { GoogleMap } from '../../../../../components/GoogleMap'
 import NavBar from '../../../../../components/NavBar'
 
@@ -55,9 +54,52 @@ const AddressFormUI = (props: AddressFormParams) => {
     isFromCheckout
   } = props
 
+  const theme = useTheme()
+
+  const styles = StyleSheet.create({
+    iconContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 10,
+      paddingHorizontal: 18,
+      paddingVertical: 5,
+    },
+    inputsStyle: {
+      borderRadius: 0,
+      backgroundColor: theme.colors.backgroundGray,
+      height: 50,
+      maxHeight: 50,
+      minHeight: 50
+    },
+    inputWrapper: {
+      width: '48%'
+    },
+    inputGroup : {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 20,
+    },
+    textAreaStyles: {
+      borderRadius: 0,
+      backgroundColor: theme.colors.backgroundGray,
+      marginBottom: 20,
+      height: 90,
+      maxHeight: 90,
+      textAlignVertical: 'top',
+      alignItems: 'flex-start'
+    },
+    modalCloseBtn: {
+      position: 'absolute',
+      top: 20,
+      right: 20,
+      color: theme.colors.black
+    }
+  })
+
   const [, t] = useLanguage()
   const [{ auth }] = useSession()
-  const { showToast } = useToast()
+  const [, {showToast}] = useToast()
   const [configState] = useConfig()
   const [orderState] = useOrder()
   const { handleSubmit, errors, control, setValue } = useForm()
@@ -426,7 +468,7 @@ const AddressFormUI = (props: AddressFormParams) => {
                           flexGrow: 1,
                           fontSize: 15,
                           borderRadius: 0,
-                          backgroundColor: colors.backgroundGray,
+                          backgroundColor: theme.colors.backgroundGray,
                           paddingHorizontal: 20,
                           minHeight: 50,
                           fontFamily: 'Poppins-Regular',
@@ -441,7 +483,7 @@ const AddressFormUI = (props: AddressFormParams) => {
               {!isKeyboardShow && (addressState?.address?.location || formState?.changes?.location) && (
                 <TouchableOpacity onPress={handleToggleMap} style={{ marginBottom: 10 }}>
                   <OText
-                    color={colors.secundary}
+                    color={theme.colors.secundary}
                     style={{ textAlign: 'center' }}
                   >
                     {t('VIEW_MAP', 'View map to modify the exact location')}
@@ -545,8 +587,8 @@ const AddressFormUI = (props: AddressFormParams) => {
                       size={40}
                       style={{
                         color: addressTag === tag.value
-                          ? colors.black
-                          : colors.gray
+                          ? theme.colors.black
+                          : theme.colors.gray
                       }}
                     />
                   </TouchableOpacity>
@@ -567,14 +609,14 @@ const AddressFormUI = (props: AddressFormParams) => {
                 }
                 imgRightSrc=''
                 onClick={handleSubmit(onSubmit)}
-                textStyle={{ color: colors.white }}
+                textStyle={{ color: theme.colors.white }}
                 style={{ borderRadius: 0 }}
                 isDisabled={formState.loading}
               />
             ) : (
               <OButton
                 text={t('CANCEL', 'Cancel')}
-                style={{ backgroundColor: colors.white, borderRadius: 0 }}
+                style={{ backgroundColor: theme.colors.white, borderRadius: 0 }}
                 onClick={() => navigation?.canGoBack() && navigation.goBack()}
               />
             )}
@@ -606,7 +648,7 @@ const AddressFormUI = (props: AddressFormParams) => {
             )}
             <OButton
               text={t('SAVE', 'Save')}
-              textStyle={{ color: colors.white }}
+              textStyle={{ color: theme.colors.white }}
               imgRightSrc={null}
               style={{ marginHorizontal: 30, marginBottom: 10, borderRadius: 0 }}
               onClick={() => setSaveMapLocation(true)}
@@ -618,47 +660,6 @@ const AddressFormUI = (props: AddressFormParams) => {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  iconContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    paddingHorizontal: 18,
-    paddingVertical: 5,
-  },
-  inputsStyle: {
-    borderRadius: 0,
-    backgroundColor: colors.backgroundGray,
-    height: 50,
-    maxHeight: 50,
-    minHeight: 50
-  },
-  inputWrapper: {
-    width: '48%'
-  },
-  inputGroup : {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
-  textAreaStyles: {
-    borderRadius: 0,
-    backgroundColor: colors.backgroundGray,
-    marginBottom: 20,
-    height: 90,
-    maxHeight: 90,
-    textAlignVertical: 'top',
-    alignItems: 'flex-start'
-  },
-  modalCloseBtn: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
-    color: colors.black
-  }
-})
 
 export const AddressForm = (props: AddressFormParams) => {
   const addressFormProps = {

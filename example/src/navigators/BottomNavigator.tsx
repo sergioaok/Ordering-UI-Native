@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Platform, PlatformIOSStatic, StyleSheet } from 'react-native'
-import { useOrder } from 'ordering-components/native'
+import { useOrder, useLanguage } from 'ordering-components/native'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
@@ -28,6 +28,7 @@ const Tab = createMaterialBottomTabNavigator();
 
 const BottomNavigator = () => {
   const theme = useTheme()
+  const [, t] = useLanguage()
   const [{ carts }] = useOrder()
   const cartsList = (carts && Object.values(carts).filter((cart: any) => cart.products.length > 0)) || []
   const isIos = Platform.OS === 'ios'
