@@ -17,7 +17,8 @@ import { BusinessListContainer, Divider, Search, OrderControlContainer, AddressI
 
 import NavBar from '../../../../../components/NavBar'
 import { SearchBar } from '../SearchBar'
-import { OText, OBottomPopup } from '../../../../../components/shared'
+import { OText } from '../../../../../components/shared'
+import { OBottomPopup } from '../shared'
 import { BusinessesListingParams } from '../../../../../types'
 import { NotFoundSource } from '../../../../../components/NotFoundSource'
 import { BusinessTypeFilter } from '../BusinessTypeFilter'
@@ -181,6 +182,8 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
         )}
       </ScrollView>
       <OBottomPopup
+        customHeaderShow
+        title={t('SELECT_DELIVERY_TIME', 'Select delivery time')}
         open={openMomentOption}
         onClose={() => setOpenMomentOption(false)}
       >

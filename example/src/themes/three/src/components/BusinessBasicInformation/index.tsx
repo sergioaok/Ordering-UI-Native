@@ -57,7 +57,7 @@ export const BusinessBasicInformation = (props: BusinessBasicInformationParams) 
           {loading ? (
             <View style={{ marginLeft: 20 }}>
               <Placeholder Animation={Fade}>
-                <PlaceholderLine height={50} width={20} />
+                <PlaceholderLine height={50} width={15} style={{ borderRadius: 5 }} />
               </Placeholder>
             </View>
           ) : (

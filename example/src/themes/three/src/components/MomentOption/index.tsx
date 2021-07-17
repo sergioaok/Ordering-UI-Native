@@ -77,9 +77,9 @@ const MomentOptionUI = (props: MomentOptionParams) => {
   return (
     <Container nopadding={nopadding}>
       <View>
-        <HeaderTitle>
+        {/* <HeaderTitle>
           <OText size={18} style={{ textAlign: 'center' }}>{t('DELIVERY_TIME', 'Delivery time')}</OText>
-        </HeaderTitle>
+        </HeaderTitle> */}
 
         <ButtonGroup>
           <OButton

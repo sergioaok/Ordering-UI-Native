@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components/native'
 
 export const Container = styled.ScrollView`
   background-color: ${(props: any) => props.theme.colors.backgroundPage};
-  padding-bottom: 30px;
+  padding: 30px 0;
 `
 export const HeaderTitle = styled.View`
   flex-direction: column;
