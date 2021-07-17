@@ -99,7 +99,7 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
             ? navigation.navigate('AddressList', { isFromBusinesses: true })
             : navigation.navigate('AddressForm', { address: orderState.options?.address,isFromBusinesses: true  })}
         >
-          <OText size={16} numberOfLines={1}>
+          <OText size={16} numberOfLines={1} style={{ paddingHorizontal: 20 }}>
             {orderState?.options?.address?.address}
           </OText>
           <MaterialIcon

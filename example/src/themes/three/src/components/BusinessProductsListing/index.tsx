@@ -11,6 +11,7 @@ import {
   useConfig
 } from 'ordering-components/native'
 import { OModal, OText } from '../../../../../components/shared'
+import { OBottomPopup } from '../shared'
 import { BusinessBasicInformation } from '../BusinessBasicInformation'
 import { SearchBar } from '../SearchBar'
 import { BusinessProductsCategories } from '../../../../../components/BusinessProductsCategories'
@@ -19,9 +20,9 @@ import { BusinessProductsListingParams } from '../../../../../types'
 import { OrderTypeSelector } from '../OrderTypeSelector'
 import { FloatingButton } from '../FloatingButton'
 import { ProductForm } from '../ProductForm'
-import { UpsellingProducts } from '../../../../../components/UpsellingProducts'
 import { BusinessInformation } from '../../../../../components/BusinessInformation'
 import { useTheme } from 'styled-components/native'
+import { Cart } from '../Cart'
 
 import {
   WrapHeader,
@@ -51,7 +52,8 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
     productModal,
     handleChangeCategory,
     setProductLogin,
-    updateProductModal
+    updateProductModal,
+    isCartOnProductsList
   } = props
 
   const theme = useTheme()
@@ -102,8 +104,8 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
   const [openBusinessInformation, setOpenBusinessInformation] = useState(false)
   const [isOpenSearchBar, setIsOpenSearchBar] = useState(false)
   const [curProduct, setCurProduct] = useState(null)
-  const [openUpselling, setOpenUpselling] = useState(false)
-  const [canOpenUpselling, setCanOpenUpselling] = useState(false)
+  const [isCartOpen, setIsCartOpen] = useState(false)
+
   const configTypes = configs?.order_types_allowed?.value.split('|').map((value: any) => Number(value)) || []
 
   const currentCart: any = Object.values(orderState.carts).find((cart: any) => cart?.business?.slug === business?.slug) ?? {}
@@ -128,17 +130,6 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
 
   const handlerProductAction = () => {
     handleCloseProductModal()
-  }
-
-  const handleUpsellingPage = () => {
-    onRedirect('CheckoutNavigator', {
-      screen: 'CheckoutPage',
-      cartUuid: currentCart?.uuid,
-      businessLogo: logo,
-      businessName: business?.name,
-      cartTotal: currentCart?.total
-    })
-    setOpenUpselling(false)
   }
 
   return (
@@ -167,7 +158,7 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
                     ? onRedirect('AddressList', { isGoBack: true, isFromProductsList: true })
                     : onRedirect('AddressForm', { address: orderState.options?.address })}
                 >
-                  <OText color={theme.colors.black} numberOfLines={1}>
+                  <OText color={theme.colors.black} numberOfLines={1} style={{ paddingHorizontal: 15 }}>
                     {orderState?.options?.address?.address}
                   </OText>
                 </AddressInput>
@@ -281,18 +272,39 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
         <FloatingButton
           btnText={
             currentCart?.subtotal >= currentCart?.minimum
-              ? !openUpselling ? t('VIEW_ORDER', 'View Order') : t('LOADING', 'Loading')
+              ? !isCartOpen
+                ? `${t('VIEW_CART', 'View cart')}`
+                : t('LOADING', 'Loading')
               : `${t('MINIMUN_SUBTOTAL_ORDER', 'Minimum subtotal order:')} ${parsePrice(currentCart?.minimum)}`
           }
           isSecondaryBtn={currentCart?.subtotal < currentCart?.minimum}
-          btnLeftValueShow={currentCart?.subtotal >= currentCart?.minimum && !openUpselling && currentCart?.products?.length > 0}
-          btnRightValueShow={currentCart?.subtotal >= currentCart?.minimum && !openUpselling && currentCart?.products?.length > 0}
+          btnLeftValueShow={currentCart?.subtotal >= currentCart?.minimum && !isCartOpen && currentCart?.products?.length > 0}
+          btnRightValueShow={currentCart?.subtotal >= currentCart?.minimum && !isCartOpen && currentCart?.products?.length > 0}
           btnLeftValue={currentCart?.products?.length}
           btnRightValue={parsePrice(currentCart?.total)}
-          disabled={openUpselling || currentCart?.subtotal < currentCart?.minimum}
-          handleClick={() => setOpenUpselling(true)}
+          disabled={isCartOpen || currentCart?.subtotal < currentCart?.minimum}
+          handleClick={() => setIsCartOpen(true)}
         />
       )}
+      <OBottomPopup
+        customHeaderShow
+        open={isCartOpen}
+        title={business?.name}
+        onClose={() => setIsCartOpen(false)}
+      >
+        {!loading && auth && currentCart?.products?.length > 0 && (
+          <Cart
+            isForceOpenCart
+            isBusinessCart
+            cart={currentCart}
+            isCartPending={currentCart?.status === 2}
+            isProducts={currentCart.products.length}
+            isCartOnProductsList={isCartOnProductsList && currentCart?.products?.length > 0}
+            handleCartOpen={(val: any) => setIsCartOpen(val)}
+            onNavigationRedirect={onRedirect}
+          />
+        )}
+      </OBottomPopup>
       <OModal
         open={!!curProduct || (!!productModal.product && !orderState.loading)}
         onClose={handleCloseProductModal}
@@ -321,17 +333,6 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
           business={business}
         />
       </OModal>
-      {openUpselling && (
-        <UpsellingProducts
-          businessId={currentCart?.business_id}
-          business={currentCart?.business}
-          cartProducts={currentCart?.products}
-          handleUpsellingPage={handleUpsellingPage}
-          openUpselling={openUpselling}
-          canOpenUpselling={canOpenUpselling}
-          setCanOpenUpselling={setCanOpenUpselling}
-        />
-      )}
     </>
   )
 }

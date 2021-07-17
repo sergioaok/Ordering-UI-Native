@@ -154,9 +154,10 @@ export interface BusinessProductsListingParams {
   header?: any;
   logo?: any;
   productModal?: any;
+  isCartOnProductsList: any;
   handleChangeCategory: (value: any) => {};
   setProductLogin?: () => {};
-  updateProductModal?: (value: any) => {}
+  updateProductModal?: (value: any) => {};
 }
 export interface BusinessBasicInformationParams {
   businessState?: any;
