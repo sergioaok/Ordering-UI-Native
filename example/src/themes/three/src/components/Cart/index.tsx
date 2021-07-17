@@ -14,7 +14,7 @@ import { OSBill, OSTable, OSCoupon, OSTotal } from '../../../../../components/Or
 
 import { ProductItemAccordion } from '../ProductItemAccordion';
 import { BusinessItemAccordion } from '../BusinessItemAccordion';
-import { CouponControl } from '../../../../../components/CouponControl';
+import { CouponControl } from '../CouponControl';
 
 import { OButton, OModal, OText } from '../../../../../components/shared';
 import { ProductForm } from '../ProductForm';

@@ -101,12 +101,12 @@ const BusinessProductsListUI = (props: BusinessProductsListParams) => {
           <>
             {[...Array(categoryState?.pagination?.nextPageItems).keys()].map((item, i) => (
               <Placeholder key={i} style={{ padding: 5 }} Animation={Fade}>
-                <View style={{ flexDirection: 'row' }}>
-                  <Placeholder style={{ paddingVertical: 10 }}>
-                    <PlaceholderLine width={60} style={{marginBottom: 25}}/>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Placeholder style={{ width: '70%', paddingVertical: 10 }}>
+                    <PlaceholderLine width={60} style={{ marginBottom: 25 }}/>
                     <PlaceholderLine width={20} />
                   </Placeholder>
-                  <PlaceholderLine width={24} height={70} style={{ marginRight: 10, marginBottom: 10 }} />
+                  <PlaceholderLine width={24} height={80} style={{ marginBottom: 10, borderRadius: 0 }} />
                 </View>
               </Placeholder>
             ))}

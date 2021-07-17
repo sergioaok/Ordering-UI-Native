@@ -154,7 +154,7 @@ export const ProductItemAccordion = (props: ProductItemAccordionParams) => {
               <OText weight={500}>{product.name}</OText>
             </View>
             <View style={{ display: 'flex', flexDirection: 'column', flex: 1, alignItems: 'flex-end' }}>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row', marginBottom: 5 }}>
                 <OText>{parsePrice(product.total || product.price)}</OText>
                 {(productInfo().ingredients.length > 0 || productInfo().options.length > 0 || product.comment) && (
                   <MaterialCommunityIcon name='chevron-down' size={18} />
@@ -166,6 +166,7 @@ export const ProductItemAccordion = (props: ProductItemAccordionParams) => {
                     name='pencil'
                     size={20}
                     color={theme.colors.primary}
+                    style={{ marginHorizontal: 10 }}
                     onPress={() => onEditProduct(product)}
                   />
                 )}
