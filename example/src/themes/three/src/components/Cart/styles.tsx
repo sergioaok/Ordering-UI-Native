@@ -4,12 +4,10 @@ export const CContainer = styled.View`
   /* border-bottom: 1px solid #F0F0F0; */
 `
 
-export const OrderBill = styled.View`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding: 10px;
-  background-color: #FFF;
+export const CartContent = styled.View`
+  ${((props: any) => props.isBusinessCart && css`
+    margin-bottom: 45px;
+  `)}
 `
 
 export const CouponContainer = styled.View`

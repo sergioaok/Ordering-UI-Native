@@ -1,31 +1,38 @@
 import styled from 'styled-components/native'
 
-export const Container = styled.View`
-  margin: 20px 0;
+export const Container = styled.ScrollView`
+  padding: 20px;
+  flex: 1;
 `
-export const UpsellingContainer = styled.ScrollView`
-  max-height: 220px;
-`
+
 export const Item = styled.View`
-  border-width: 1px;
-  border-color: ${(props: any) => props.theme.colors.lightGray};
-  border-radius: 10px;
-  flex-direction: column;
+  border-bottom-width: 1px;
+  border-bottom-color: ${(props: any) => props.theme.colors.mediumGray};
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  padding: 15px;
-  margin-right: 15px;
+  justify-content: space-between;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
 `
+
+export const ItemContent = styled.View`
+  flex-direction: row;
+`
+
 export const Details = styled.View`
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  margin: 15px 0 10px 0;
   max-width: 120px;
+  margin-left: 10px;
 `
 export const AddButton = styled.TouchableOpacity`
+  background-color: ${(props: any) => props.theme.colors?.mediumGray};
+  flex-direction: row;
+  align-items: center;
+  border-radius: 30px;
+  padding: 5px 10px;
 `
 export const CloseUpselling = styled.View`
   margin-vertical: 10px;
-  width: 100%;
+  margin: 0 20px;
 `

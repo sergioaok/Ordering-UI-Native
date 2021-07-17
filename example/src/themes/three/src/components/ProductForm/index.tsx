@@ -306,12 +306,13 @@ export const ProductOptionsUI = (props: any) => {
                 onClick={() => handleSaveProduct()}
                 imgRightSrc=''
                 text={`${orderState.loading ? t('LOADING', 'Loading') : editMode ? t('UPDATE', 'Update') : t('ADD_TO_CART', 'Add to Cart')} ${productCart.total ? parsePrice(productCart?.total) : ''}`}
-                textStyle={{ color: saveErrors ? theme.colors.primary : theme.colors.white }}
+                textStyle={{ color: theme.colors.white }}
                 style={{
-                  backgroundColor: saveErrors ? theme.colors.white : theme.colors.primary,
+                  backgroundColor: theme.colors.primary,
                   opacity: saveErrors ? 0.3 : 1,
                   borderRadius: 0
                 }}
+                isDisabled={saveErrors}
               />
             )}
             {auth && !orderState.options?.address_id && (
