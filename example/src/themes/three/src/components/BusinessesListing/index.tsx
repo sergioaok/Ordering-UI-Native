@@ -95,6 +95,9 @@ const BusinessesListingUI = (props: BusinessesListingParams) => {
         />
       )}
       <OrderControlContainer>
+        <OText color={theme.colors.green} mBottom={5}>
+          {t('DELIVER_TO', 'Deliver to')}
+        </OText>
         <AddressInput
           onPress={() => auth
             ? navigation.navigate('AddressList', { isFromBusinesses: true })

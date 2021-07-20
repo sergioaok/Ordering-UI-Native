@@ -76,14 +76,6 @@ export const BusinessTypeFilterUI = (props: BusinessTypeFilterParams) => {
       )}
       {!typesState?.loading && !typesState?.error && typesState?.types && typesState?.types.length > 0 && (
         <>
-          <BusinessCategoriesTitle>
-            <OText
-              size={16}
-              color={theme.colors.primary}
-            >
-              {t('BUSINESS_CATEGORIES', 'Business Categories')}
-            </OText>
-          </BusinessCategoriesTitle>
           <BusinessCategories>
             <FlatList
               horizontal

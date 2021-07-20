@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 export const BusinessListContainer = styled.View`
   flex: 1;
   flex-direction: column;
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
 `
 
 export const Divider = styled.View`
