@@ -23,6 +23,8 @@ import { ProductForm } from '../ProductForm'
 import { BusinessInformation } from '../../../../../components/BusinessInformation'
 import { useTheme } from 'styled-components/native'
 import { Cart } from '../Cart'
+import Animated from 'react-native-reanimated'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import {
   WrapHeader,
@@ -60,7 +62,7 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
 
   const styles = StyleSheet.create({
     mainContainer: {
-      flex: 1,
+      flex: 1
     },
     headerItem: {
       flexDirection: 'row',
@@ -105,10 +107,12 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
   const [isOpenSearchBar, setIsOpenSearchBar] = useState(false)
   const [curProduct, setCurProduct] = useState(null)
   const [isCartOpen, setIsCartOpen] = useState(false)
+	const [isStickyCategory, setStickyCategory] = useState(false)
 
   const configTypes = configs?.order_types_allowed?.value.split('|').map((value: any) => Number(value)) || []
-
   const currentCart: any = Object.values(orderState.carts).find((cart: any) => cart?.business?.slug === business?.slug) ?? {}
+
+  const { top } = useSafeAreaInsets();
 
   const onRedirect = (route: string, params?: any) => {
     navigation.navigate(route, params)
@@ -132,27 +136,36 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
     handleCloseProductModal()
   }
 
+  const handlePageScroll = (event: any) => {
+		const y = event?.nativeEvent?.contentOffset?.y || 0;
+		if (y > 30 && !isStickyCategory) {
+			setStickyCategory(true);
+		} else if (y < 19 && isStickyCategory) {
+			setStickyCategory(false);
+		}
+	}
+
   return (
     <>
-      <BusinessProductsListingContainer
-        stickyHeaderIndices={[2]}
-        style={styles.mainContainer}
-        isActiveFloatingButtom={currentCart?.products?.length > 0 && categoryState.products.length !== 0}
-      >
-        <WrapHeader>
-          {!loading && business?.id && (
-            <TopHeader>
-              <View style={{ ...styles.headerItem, flex: 1 }}>
-                <TouchableOpacity
-                  onPress={() => (navigation?.canGoBack() && navigation.goBack()) || (auth && navigation.navigate('BottomTab'))}
-                  style={styles.iconBtn}
-                >
-                  <MaterialComIcon
-                    name='arrow-left'
-                    color={theme.colors.black}
-                    size={24}
-                  />
-                </TouchableOpacity>
+      <Animated.View style={{ flex: 1, position: 'absolute', width: '100%', top: top, zIndex: 100 }}>
+	      {!loading && business?.id && (
+          <TopHeader bgWhite={isStickyCategory}>
+            <View style={{ ...styles.headerItem, flex: 1 }}>
+              <TouchableOpacity
+                onPress={() => (navigation?.canGoBack() && navigation.goBack()) || (auth && navigation.navigate('BottomTab'))}
+                style={styles.iconBtn}
+              >
+                <MaterialComIcon
+                  name='arrow-left'
+                  color={theme.colors.black}
+                  size={24}
+                />
+              </TouchableOpacity>
+              {isStickyCategory ? (
+                <OText size={20} color={theme.colors.black} numberOfLines={1} style={{ flex: 1, paddingHorizontal: 15 }}>
+                  {business?.name}
+                </OText>
+              ) : (
                 <AddressInput
                   onPress={() => auth
                     ? onRedirect('AddressList', { isGoBack: true, isFromProductsList: true })
@@ -162,20 +175,29 @@ const BusinessProductsListingUI = (props: BusinessProductsListingParams) => {
                     {orderState?.options?.address?.address}
                   </OText>
                 </AddressInput>
-                <TouchableOpacity
-                  onPress={() => setOpenBusinessInformation(true)}
-                  style={styles.iconBtn}
-                >
-                  <MaterialComIcon
-                    name='dots-horizontal'
-                    color={theme.colors.black}
-                    size={24}
-                  />
-                </TouchableOpacity>
-              </View>
-            </TopHeader>
-          )}
-
+              )}
+              <TouchableOpacity
+                onPress={() => setOpenBusinessInformation(true)}
+                style={styles.iconBtn}
+              >
+                <MaterialComIcon
+                  name='dots-horizontal'
+                  color={theme.colors.black}
+                  size={24}
+                />
+              </TouchableOpacity>
+            </View>
+          </TopHeader>
+        )}
+			</Animated.View>
+      <BusinessProductsListingContainer
+        stickyHeaderIndices={[2]}
+        style={{ ...styles.mainContainer, marginTop: isStickyCategory ? 60 : 0 }}
+        isActiveFloatingButtom={currentCart?.products?.length > 0 && categoryState.products.length !== 0}
+        onScroll={handlePageScroll}
+        scrollEventThrottle={14}
+      >
+        <WrapHeader>
           <BusinessBasicInformation
             businessState={businessState}
             header={header}

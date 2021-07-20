@@ -184,13 +184,31 @@ const CheckoutUI = (props: any) => {
     <>
       <Container>
         <ChContainer>
-          <ChSection style={{ paddingBottom: 20, zIndex: 100 }}>
+          <ChSection>
             <OButton
               imgLeftSrc={theme.images.general.arrow_left}
               imgRightSrc={null}
               style={style.btnBackArrow}
               onClick={() => navigation?.canGoBack() && navigation.goBack()}
             />
+            <ChTotal>
+              <OIcon
+                url={businessLogo || businessDetails?.business?.logo}
+                width={80}
+                height={80}
+                borderRadius={80}
+              />
+              <View style={{ marginHorizontal: 15, flex: 1, alignItems: 'flex-start' }}>
+                <OText size={22} numberOfLines={2} ellipsizeMode='tail' >
+                  {businessName || businessDetails?.business?.name}
+                </OText>
+                <OText size={22}>
+                  {cart?.total >= 1 && parsePrice(cart?.total) || cartTotal >= 1 && parsePrice(cartTotal)}
+                </OText>
+              </View>
+            </ChTotal>
+          </ChSection>
+          <ChSection style={{ paddingBottom: 20, zIndex: 100 }}>            
             <ChHeader>
               <OText size={24}>{t('CHECKOUT', 'Checkout')}</OText>
               <OrderTypeSelector configTypes={configTypes} />
@@ -213,24 +231,6 @@ const CheckoutUI = (props: any) => {
             </ChSection>
           )}
 
-          <ChSection>
-            <ChTotal>
-              <OIcon
-                url={businessLogo || businessDetails?.business?.logo}
-                width={80}
-                height={80}
-                borderRadius={80}
-              />
-              <View style={{ marginHorizontal: 15, flex: 1, alignItems: 'flex-start' }}>
-                <OText size={22} numberOfLines={2} ellipsizeMode='tail' >
-                  {businessName || businessDetails?.business?.name}
-                </OText>
-                <OText size={22}>
-                  {cart?.total >= 1 && parsePrice(cart?.total) || cartTotal >= 1 && parsePrice(cartTotal)}
-                </OText>
-              </View>
-            </ChTotal>
-          </ChSection>
           <ChSection style={style.paddSection}>
             <ChAddress>
               {(businessDetails?.loading || cartState.loading) ? (

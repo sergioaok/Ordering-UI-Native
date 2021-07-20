@@ -4,13 +4,15 @@ export const WrapHeader = styled.View`
   position: relative;
 `
 export const TopHeader = styled.View`
-  position: absolute;
   width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   z-index: 1;
   flex: 1;
+  ${(props: any) => props.bgWhite && css`
+    background: ${(props: any) => props.theme.colors.white};
+  `}
 `
 export const AddressInput = styled.TouchableOpacity`
   flex: 1;
