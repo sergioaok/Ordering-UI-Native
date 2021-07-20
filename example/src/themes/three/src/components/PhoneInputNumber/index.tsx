@@ -89,7 +89,7 @@ export const PhoneInputNumber = (props: PhoneInputParams) => {
         onChangeFormattedText={(text : string) => handleChangeNumber(text)}
         withDarkTheme
         textInputStyle={{textAlign: I18nManager.isRTL ? 'right' : 'left'}}
-        countryPickerProps={{withAlphaFilter:true}}
+        countryPickerProps={{ withAlphaFilter: true }}
         textContainerStyle={style.input}
         placeholder={t('PHONE_NUMBER', 'Phone Number')}
         textInputProps={{autoCompleteType: 'tel', ref: forwardRef, ...textInputProps}}

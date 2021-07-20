@@ -201,9 +201,9 @@ export const ProductItemAccordion = (props: ProductItemAccordionParams) => {
           <AccordionContent>
             {productInfo().ingredients.length > 0 && productInfo().ingredients.some((ingredient: any) => !ingredient.selected) && (
               <ProductOptionsList>
-                <OText>{t('INGREDIENTS', 'Ingredients')}</OText>
+                <OText color={theme.colors.gray}>{t('INGREDIENTS', 'Ingredients')}</OText>
                 {productInfo().ingredients.map((ingredient: any) => !ingredient.selected && (
-                  <OText key={ingredient.id} style={{ marginLeft: 10 }}>{t('NO', 'No')} {ingredient.name}</OText>
+                  <OText key={ingredient.id} color={theme.colors.gray} style={{ marginLeft: 10 }}>{t('NO', 'No')} {ingredient.name}</OText>
                 ))}
               </ProductOptionsList>
             )}
@@ -211,10 +211,10 @@ export const ProductItemAccordion = (props: ProductItemAccordionParams) => {
               <ProductOptionsList>
                 {productInfo().options.map((option: any, i: number) => (
                   <ProductOption key={option.id + i}>
-                    <OText>{option.name}</OText>
+                    <OText color={theme.colors.gray}>{option.name}</OText>
                     {option.suboptions.map((suboption: any) => (
                       <ProductSubOption key={suboption.id}>
-                        <OText>
+                        <OText color={theme.colors.gray}>
                           {getFormattedSubOptionName({
                             quantity: suboption.quantity,
                             name: suboption.name,
@@ -230,8 +230,8 @@ export const ProductItemAccordion = (props: ProductItemAccordionParams) => {
             )}
             {product.comment && (
               <ProductComment>
-                <OText>{t('SPECIAL_COMMENT', 'Special Comment')}</OText>
-                <OText>{product.comment}</OText>
+                <OText color={theme.colors.gray}>{t('SPECIAL_COMMENT', 'Special Comment')}</OText>
+                <OText color={theme.colors.gray}>{product.comment}</OText>
               </ProductComment>
             )}
           </AccordionContent>

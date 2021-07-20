@@ -16,20 +16,19 @@ import {
   useToast
 } from 'ordering-components/native';
 
-import { OText, OButton, OIcon } from '../../../../../components/shared';
+import { OText, OButton } from '../../../../../components/shared';
 
-import { AddressDetails } from '../../../../../components/AddressDetails';
-import { PaymentOptions } from '../../../../../components/PaymentOptions';
-import { DriverTips } from '../../../../../components/DriverTips';
-import { OrderSummary } from '../../../../../components/OrderSummary';
+import { AddressDetails } from '../AddressDetails';
+import { PaymentOptions } from '../PaymentOptions';
+import { DriverTips } from '../DriverTips';
+import { OrderSummary } from '../OrderSummary';
 import { NotFoundSource } from '../../../../../components/NotFoundSource';
-import { UserDetails } from '../../../../../components/UserDetails';
+import { UserDetails } from '../UserDetails';
 import { OrderTypeSelector } from '../OrderTypeSelector'
 
 import {
   ChContainer,
   ChSection,
-  ChHeader,
   ChTotal,
   ChAddress,
   ChMoment,
@@ -192,29 +191,17 @@ const CheckoutUI = (props: any) => {
               onClick={() => navigation?.canGoBack() && navigation.goBack()}
             />
             <ChTotal>
-              <OIcon
-                url={businessLogo || businessDetails?.business?.logo}
-                width={80}
-                height={80}
-                borderRadius={80}
-              />
-              <View style={{ marginHorizontal: 15, flex: 1, alignItems: 'flex-start' }}>
-                <OText size={22} numberOfLines={2} ellipsizeMode='tail' >
-                  {businessName || businessDetails?.business?.name}
-                </OText>
-                <OText size={22}>
-                  {cart?.total >= 1 && parsePrice(cart?.total) || cartTotal >= 1 && parsePrice(cartTotal)}
-                </OText>
-              </View>
+              <OText size={26} weight={500} numberOfLines={2} ellipsizeMode='tail'>
+                {businessName || businessDetails?.business?.name}
+              </OText>
+              <OText size={16} color={theme.colors.gray} numberOfLines={1} ellipsizeMode='tail' style={{ marginVertical: 5 }}>
+                {businessDetails?.business?.address}
+              </OText>
+              <OText size={16} color={theme.colors.gray} mBottom={15}>
+                {businessDetails?.business?.cellphone}
+              </OText>
             </ChTotal>
           </ChSection>
-          <ChSection style={{ paddingBottom: 20, zIndex: 100 }}>            
-            <ChHeader>
-              <OText size={24}>{t('CHECKOUT', 'Checkout')}</OText>
-              <OrderTypeSelector configTypes={configTypes} />
-            </ChHeader>
-          </ChSection>
-
           {!cartState.loading && (cart?.status === 2 || cart?.status === 4) && (
             <ChSection style={{ paddingBottom: 20 }}>
               <ChErrors>
@@ -230,8 +217,11 @@ const CheckoutUI = (props: any) => {
               </ChErrors>
             </ChSection>
           )}
+          <ChSection style={{ zIndex: 100 }}>            
+            <OrderTypeSelector configTypes={configTypes} />
+          </ChSection>
 
-          <ChSection style={style.paddSection}>
+          <ChSection>
             <ChAddress>
               {(businessDetails?.loading || cartState.loading) ? (
                 <Placeholder Animation={Fade}>
@@ -251,29 +241,8 @@ const CheckoutUI = (props: any) => {
               )}
             </ChAddress>
           </ChSection>
-          <ChSection style={style.paddSectionH}>
-            <ChMoment>
-              <CHMomentWrapper
-                disabled={loading}
-                onPress={() => navigation.navigate('MomentOption')}
-              >
-                <MaterialCommunityIcon
-                  name='clock-outline'
-                  size={24}
-                  style={{ marginRight: 5 }}
-                />
-                <OText size={18} numberOfLines={1} ellipsizeMode='tail'>
-                  {options?.moment
-                    ? parseDate(options?.moment, {
-                      outputFormat: configs?.format_time?.value === '12' ? 'MM/DD hh:mma' : 'MM/DD HH:mm'
-                    })
-                    : t('ASAP_ABBREVIATION', 'ASAP')}
-                </OText>
-              </CHMomentWrapper>
-            </ChMoment>
-          </ChSection>
 
-          <ChSection style={style.paddSection}>
+          <ChSection>
             <ChUserDetails>
               {cartState.loading ? (
                 <Placeholder Animation={Fade}>
@@ -298,7 +267,33 @@ const CheckoutUI = (props: any) => {
             </ChUserDetails>
           </ChSection>
 
-          <ChSection style={style.paddSectionH}>
+          <ChSection>
+            <ChMoment>
+              <OText size={16}>
+                {t('DELIVERY_TIME', 'Delivery time')}
+              </OText>
+              <CHMomentWrapper
+                disabled={loading}
+                onPress={() => navigation.navigate('MomentOption')}
+              >
+                <MaterialCommunityIcon
+                  name='clock-outline'
+                  size={24}
+                  color={theme.colors.white}
+                  style={{ marginRight: 5 }}
+                />
+                <OText size={18} color={theme.colors.white} numberOfLines={1} ellipsizeMode='tail'>
+                  {options?.moment
+                    ? parseDate(options?.moment, {
+                      outputFormat: configs?.format_time?.value === '12' ? 'MM/DD hh:mma' : 'MM/DD HH:mm'
+                    })
+                    : t('ASAP_ABBREVIATION', 'ASAP')}
+                </OText>
+              </CHMomentWrapper>
+            </ChMoment>
+          </ChSection>
+
+          <ChSection>
             <ChBusinessDetails>
               {
                 (businessDetails?.loading || cartState.loading) &&
@@ -317,30 +312,30 @@ const CheckoutUI = (props: any) => {
                 Object.values(businessDetails?.business).length > 0 &&
                 (
                   <View>
-                    <OText size={20}>
+                    <OText size={16} weight={500} mBottom={10}>
                       {t('BUSINESS_DETAILS', 'Business Details')}
                     </OText>
                     <View>
                       <OText size={16}>
-                        <OText size={18} weight='bold'>
+                        <OText size={16} weight='500'>
                           {t('NAME', 'Name')}:{' '}
                         </OText>
                         {businessDetails?.business?.name}
                       </OText>
                       <OText size={16}>
-                        <OText size={18} weight='bold'>
+                        <OText size={16} weight='500'>
                           {t('EMAIL', 'Email')}:{' '}
                         </OText>
                         {businessDetails?.business?.email}
                       </OText>
                       <OText size={16}>
-                        <OText size={18} weight='bold'>
+                        <OText size={16} weight='500'>
                           {t('CELLPHONE', 'Cellphone')}:{' '}
                         </OText>
                         {businessDetails?.business?.cellphone}
                       </OText>
                       <OText size={16}>
-                        <OText size={18} weight='bold'>
+                        <OText size={16} weight='500'>
                           {t('ADDRESS', 'Address')}:{' '}
                         </OText>
                         {businessDetails?.business?.address}
@@ -369,9 +364,9 @@ const CheckoutUI = (props: any) => {
             validationFields?.fields?.checkout?.driver_tip?.enabled &&
             driverTipsOptions && driverTipsOptions?.length > 0 &&
             (
-              <ChSection style={style.paddSection}>
+              <ChSection>
                 <ChDriverTips>
-                  <OText size={20}>
+                  <OText size={16} weight={500}>
                     {t('DRIVER_TIPS', 'Driver Tips')}
                   </OText>
                   <DriverTips
@@ -389,16 +384,16 @@ const CheckoutUI = (props: any) => {
             )}
 
           {!cartState.loading && cart && cart?.status !== 2 && cart?.valid && (
-            <ChSection style={style.paddSectionH}>
+            <ChSection>
               <ChPaymethods>
-                <OText size={20}>
+                <OText size={16} weight={500}>
                   {t('PAYMENT_METHOD', 'Payment Method')}
                 </OText>
                 {!cartState.loading && cart?.status === 4 && (
                   <OText
                     style={{ textAlign: 'center', marginTop: 20 }}
                     color={theme.colors.error}
-                    size={17}
+                    size={16}
                   >
                     {t('CART_STATUS_CANCEL_MESSAGE', 'The payment has not been successful, please try again')}
                   </OText>
@@ -420,7 +415,7 @@ const CheckoutUI = (props: any) => {
           )}
 
           {!cartState.loading && cart && (
-            <ChSection style={style.paddSection}>
+            <ChSection>
               <ChCart>
                 {cartsWithProducts && cart?.products?.length === 0 ? (
                   <NotFoundSource
