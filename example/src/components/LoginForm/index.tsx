@@ -36,6 +36,7 @@ import NavBar from '../NavBar'
 import { OText, OButton, OInput, OModal } from '../shared';
 import { LoginParams } from '../../types';
 import { useTheme } from 'styled-components/native';
+import { AppleLogin } from '../AppleLogin'
 
 const LoginFormUI = (props: LoginParams) => {
   const {
@@ -79,7 +80,7 @@ const LoginFormUI = (props: LoginParams) => {
   const [passwordSee, setPasswordSee] = useState(false);
   const [isLoadingVerifyModal, setIsLoadingVerifyModal] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isFBLoading, setIsFBLoading] = useState(false);
+  const [isLoadingSocialButton, setIsLoadingSocialButton] = useState(false);
   const [phoneInputData, setPhoneInputData] = useState({
     error: '',
     phone: {
@@ -129,6 +130,14 @@ const LoginFormUI = (props: LoginParams) => {
     login({
       user,
       token: user.session.access_token
+    })
+  }
+
+  const handleSuccessApple = (user : any) => {
+    _removeStoreData('isGuestUser')
+    login({
+      user,
+      token: user?.session?.access_token
     })
   }
 
@@ -364,8 +373,14 @@ const LoginFormUI = (props: LoginParams) => {
                 <FacebookLogin
                   notificationState={notificationState}
                   handleErrors={(err: any) => showToast(ToastType.Error, err)}
-                  handleLoading={(val: boolean) => setIsFBLoading(val)}
+                  handleLoading={(val: boolean) => setIsLoadingSocialButton(val)}
                   handleSuccessFacebookLogin={handleSuccessFacebook}
+                />
+                <AppleLogin
+                  notificationState={notificationState}
+                  handleErrors={(err: any) => showToast(ToastType.Error, err)}
+                  handleLoading={(val: boolean) => setIsLoadingSocialButton(val)}
+                  handleSuccessApple={handleSuccessApple}
                 />
               </SocialButtons>
             </ButtonsWrapper>
@@ -397,7 +412,7 @@ const LoginFormUI = (props: LoginParams) => {
           handleVerifyCodeClick={handleVerifyCodeClick}
         />
       </OModal>
-      <Spinner visible={isFBLoading} />
+      <Spinner visible={isLoadingSocialButton} />
     </Container>
   );
 };
