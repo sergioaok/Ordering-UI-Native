@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { FlatList, TouchableOpacity, View, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesignIcons from 'react-native-vector-icons/AntDesign';
 import {
   Placeholder,
   PlaceholderLine,
@@ -17,7 +18,7 @@ import {
   useToast
 } from 'ordering-components/native';
 
-import { PaymentOptionCash } from '../../../../../components/PaymentOptionCash';
+import { PaymentOptionCash } from '../PaymentOptionCash';
 import { StripeElementsForm } from '../../../../../components/StripeElementsForm';
 import { StripeCardsList } from '../../../../../components/StripeCardsList';
 // import { PaymentOptionStripe } from '../PaymentOptionStripe';
@@ -29,6 +30,7 @@ import { OText, OIcon, OModal, OButton } from '../../../../../components/shared'
 
 import {
   PMContainer,
+  SelectedPaymethod,
   PMItem,
   PMCardSelected,
   PMCardItemContent
@@ -65,6 +67,7 @@ const PaymentOptionsUI = (props: any) => {
 
   const [addCardOpen, setAddCardOpen] = useState({ stripe: false, stripeConnect: false });
   const [showGateway, setShowGateway] = useState<any>({closedByUsed: false, open: false});
+  const [openPaymentOptions, setOpenPaymentOptions] = useState(false)
   const [prog, setProg] = useState(true);
   const [progClr, setProgClr] = useState('#424242');
   const [, { showToast }] = useToast();
@@ -194,7 +197,7 @@ const PaymentOptionsUI = (props: any) => {
                 width={37}
                 height={80}
                 noMargin
-                style={{ borderRadius: 10, marginRight: 10 }}
+                style={{ borderRadius: 0, marginRight: 10 }}
               />
             ))}
           </View>

@@ -5,7 +5,6 @@ export const UDForm = styled.View`
   align-items: center;
   flex-direction: column;
   width: 100%;
-  margin-top: 20px;
 `
 
 export const UDWrapper = styled.View`

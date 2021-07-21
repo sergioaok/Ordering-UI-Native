@@ -6,6 +6,16 @@ export const PMContainer = styled.View`
   flex-direction: column;
 `
 
+export const SelectedPaymethod = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-vertical: 15px;
+  border-bottom-width: 1px;
+  border-bottom-color: ${(props: any) => props.theme.colors.mediumGray};
+`
+
 export const PMList = styled.View`
   display: flex;
   justify-content: flex-start;

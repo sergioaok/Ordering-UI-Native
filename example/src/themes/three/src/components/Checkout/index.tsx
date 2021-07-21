@@ -225,8 +225,9 @@ const CheckoutUI = (props: any) => {
             <ChAddress>
               {(businessDetails?.loading || cartState.loading) ? (
                 <Placeholder Animation={Fade}>
-                  <PlaceholderLine height={20} style={{ marginBottom: 50 }} />
-                  <PlaceholderLine height={100} />
+                  <PlaceholderLine height={160} style={{ borderRadius: 0, marginBottom: 10 }} />
+                  <PlaceholderLine height={20} width={40} style={{ marginBottom: 10 }} />
+                  <PlaceholderLine height={20} width={20} />
                 </Placeholder>
               ) : (
                 <AddressDetails
@@ -424,7 +425,7 @@ const CheckoutUI = (props: any) => {
                   />
                 ) : (
                   <>
-                    <OText size={20}>
+                    <OText size={16} weight={500}>
                       {t('ORDER_SUMMARY', 'Order Summary')}
                     </OText>
                     <OrderSummary
@@ -439,7 +440,7 @@ const CheckoutUI = (props: any) => {
           )}
 
           {!cartState.loading && cart && (
-            <ChSection style={{ paddingTop: 0, paddingBottom: 20, paddingHorizontal: 20 }}>
+            <ChSection style={{ paddingVertical: 20, paddingHorizontal: 20 }}>
               <ChErrors>
                 {!cart?.valid_address && cart?.status !== 2 && (
                   <OText
