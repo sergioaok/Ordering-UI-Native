@@ -10,7 +10,7 @@ import { ProductIngredient } from '../ProductIngredient'
 import { ProductOption } from '../ProductOption'
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { View, TouchableOpacity, StyleSheet, Dimensions, ScrollView, I18nManager } from 'react-native'
+import { View, TouchableOpacity, StyleSheet, Dimensions, ScrollView, I18nManager, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather';
 
 import {
@@ -38,6 +38,12 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width
+
+import styled from 'styled-components/native'
+
+const KeyboardView = styled.KeyboardAvoidingView`
+  flex: 1;
+`;
 
 export const ProductOptionsUI = (props: any) => {
   const {
@@ -97,253 +103,258 @@ export const ProductOptionsUI = (props: any) => {
 
   return (
     <>
-      <ScrollView style={styles.mainContainer}>
-        {!error && (
-          <View style={{ paddingBottom: 80 }}>
-            <WrapHeader>
-              {loading && !product ? (
-                <View style={styles.productHeaderSkeleton}>
-                  <Placeholder Animation={Fade} >
-                    <PlaceholderLine height={300} style={{ borderRadius: 0 }} width={windowWidth} />
-                  </Placeholder>
-                </View>
-              ) : (
-                <>
-                  <TopHeader>
-                    <View style={styles.headerItem}>
-                      <Icon
-                        name="x"
-                        size={35}
-                        style={{ color: theme.colors.white, backgroundColor: 'rgba(0,0,0,0.3)' }}
-                        onPress={onClose}
-                      />
-                    </View>
-                  </TopHeader>
-                  <ProductHeader
-                    source={{ uri: product?.images || productCart?.images }}
-                  />
-                </>
-              )}
-            </WrapHeader>
-            <WrapContent>
-              <ProductTitle>
+      <KeyboardView
+        enabled
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <ScrollView style={styles.mainContainer}>
+          {!error && (
+            <View style={{ paddingBottom: 80 }}>
+              <WrapHeader>
                 {loading && !product ? (
-                  <Placeholder Animation={Fade}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                      <PlaceholderLine width={40} height={20} />
-                      <PlaceholderLine width={30} height={20} />
-                    </View>
-                  </Placeholder>
+                  <View style={styles.productHeaderSkeleton}>
+                    <Placeholder Animation={Fade} >
+                      <PlaceholderLine height={300} style={{ borderRadius: 0 }} width={windowWidth} />
+                    </Placeholder>
+                  </View>
                 ) : (
                   <>
-                    <OText
-                      weight={600}
-                      size={20}
-                      numberOfLines={1}
-                      ellipsizeMode='tail'
-                      style={{
-                        flex: I18nManager.isRTL ? 0 : 1,
-                        marginRight: I18nManager.isRTL ? 0 : 30,
-                        marginLeft: I18nManager.isRTL ? 30 : 0
-                      }}
-                    >
-                      {product?.name || productCart.name}
-                    </OText>
-                    <OText weight={600} size={20} style={{ flex: I18nManager.isRTL ? 1 : 0 }} color={theme.colors.primary}>{productCart.price ? parsePrice(productCart.price) : ''}</OText>
+                    <TopHeader>
+                      <View style={styles.headerItem}>
+                        <Icon
+                          name="x"
+                          size={35}
+                          style={{ color: theme.colors.white, backgroundColor: 'rgba(0,0,0,0.3)' }}
+                          onPress={onClose}
+                        />
+                      </View>
+                    </TopHeader>
+                    <ProductHeader
+                      source={{ uri: product?.images || productCart?.images }}
+                    />
                   </>
                 )}
-              </ProductTitle>
-              <ProductDescription>
-                <OText color={theme.colors.gray}>{product?.description || productCart?.description}</OText>
-                {(
-                  (product?.sku && product?.sku !== '-1' && product?.sku !== '1') ||
-                  (productCart?.sku && productCart?.sku !== '-1' && productCart?.sku !== '1')
-                ) && (
+              </WrapHeader>
+              <WrapContent>
+                <ProductTitle>
+                  {loading && !product ? (
+                    <Placeholder Animation={Fade}>
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <PlaceholderLine width={40} height={20} />
+                        <PlaceholderLine width={30} height={20} />
+                      </View>
+                    </Placeholder>
+                  ) : (
                     <>
-                      <OText size={20}>{t('SKU', 'Sku')}</OText>
-                      <OText>{product?.sku || productCart?.sku}</OText>
+                      <OText
+                        weight={600}
+                        size={20}
+                        numberOfLines={1}
+                        ellipsizeMode='tail'
+                        style={{
+                          flex: I18nManager.isRTL ? 0 : 1,
+                          marginRight: I18nManager.isRTL ? 0 : 30,
+                          marginLeft: I18nManager.isRTL ? 30 : 0
+                        }}
+                      >
+                        {product?.name || productCart.name}
+                      </OText>
+                      <OText weight={600} size={20} style={{ flex: I18nManager.isRTL ? 1 : 0 }} color={theme.colors.primary}>{productCart.price ? parsePrice(productCart.price) : ''}</OText>
                     </>
                   )}
-              </ProductDescription>
-              {loading && !product ? (
-                <>
-                  {[...Array(2)].map((item,i) => (
-                  <Placeholder key={i} style={{marginBottom: 20}} Animation={Fade}>
-                    <PlaceholderLine height={40} style={{ flex: 1, marginTop: 10 }} />
-                    {[...Array(3)].map((item,i) => (
-                      <View key={i} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <PlaceholderLine height={30} width={10} style={{marginBottom: 20}} />
-                        <PlaceholderLine height={30} width={50} style={{marginBottom: 20}} />
-                        <PlaceholderLine height={30} width={30} style={{marginBottom: 20}} />
-                      </View>
+                </ProductTitle>
+                <ProductDescription>
+                  <OText color={theme.colors.gray}>{product?.description || productCart?.description}</OText>
+                  {(
+                    (product?.sku && product?.sku !== '-1' && product?.sku !== '1') ||
+                    (productCart?.sku && productCart?.sku !== '-1' && productCart?.sku !== '1')
+                  ) && (
+                      <>
+                        <OText size={20}>{t('SKU', 'Sku')}</OText>
+                        <OText>{product?.sku || productCart?.sku}</OText>
+                      </>
+                    )}
+                </ProductDescription>
+                {loading && !product ? (
+                  <>
+                    {[...Array(2)].map((item,i) => (
+                    <Placeholder key={i} style={{marginBottom: 20}} Animation={Fade}>
+                      <PlaceholderLine height={40} style={{ flex: 1, marginTop: 10 }} />
+                      {[...Array(3)].map((item,i) => (
+                        <View key={i} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                          <PlaceholderLine height={30} width={10} style={{marginBottom: 20}} />
+                          <PlaceholderLine height={30} width={50} style={{marginBottom: 20}} />
+                          <PlaceholderLine height={30} width={30} style={{marginBottom: 20}} />
+                        </View>
+                      ))}
+                    </Placeholder>
                     ))}
-                  </Placeholder>
-                  ))}
-                </>
-              ) : (
-                <ProductEditions>
-                  {product?.ingredients?.length > 0 && (
-                    <View style={styles.optionContainer}>
-                      <SectionTitle>
-                        <OText size={16}>{t('INGREDIENTS', 'Ingredients')}</OText>
-                        <WrapperArrowIcon
-                          rotate={!openIngredient}
-                          onPress={() => setOpenIngredient(openIngredient === '' ? 'active' : '')}
+                  </>
+                ) : (
+                  <ProductEditions>
+                    {product?.ingredients?.length > 0 && (
+                      <View style={styles.optionContainer}>
+                        <SectionTitle>
+                          <OText size={16}>{t('INGREDIENTS', 'Ingredients')}</OText>
+                          <WrapperArrowIcon
+                            rotate={!openIngredient}
+                            onPress={() => setOpenIngredient(openIngredient === '' ? 'active' : '')}
+                          >
+                            <MaterialIcon
+                              name='keyboard-arrow-down'
+                              size={30}
+                            />
+                          </WrapperArrowIcon>
+                        </SectionTitle>
+                        <WrapperIngredients
+                          style={{ backgroundColor: isSoldOut || maxProductQuantity <= 0 ? 'hsl(0, 0%, 72%)' : theme.colors.white }}
+                          hidden={!openIngredient}  
                         >
-                          <MaterialIcon
-                            name='keyboard-arrow-down'
-                            size={30}
-                          />
-                        </WrapperArrowIcon>
+                          {product?.ingredients.map((ingredient: any) => (
+                            <ProductIngredient
+                              key={ingredient.id}
+                              ingredient={ingredient}
+                              state={productCart.ingredients[`id:${ingredient.id}`]}
+                              onChange={handleChangeIngredientState}
+                            />
+                          ))}
+                        </WrapperIngredients>
+                      </View>
+                    )}
+                    {product?.extras?.map((extra: any) => extra.options.map((option: any) => {
+                      const currentState = productCart.options[`id:${option.id}`] || {}
+                      return (
+                        <React.Fragment key={option.id}>
+                          {
+                            showOption(option) && (
+                              <View style={styles.optionContainer}>
+                                <ProductOption
+                                  option={option}
+                                  currentState={currentState}
+                                  error={errors[`id:${option.id}`]}
+                                >
+                                  <WrapperSubOption style={{ backgroundColor: isError(option.id) }}>
+                                    {
+                                      option.suboptions.map((suboption: any) => {
+                                        const currentState = productCart.options[`id:${option.id}`]?.suboptions[`id:${suboption.id}`] || {}
+                                        const balance = productCart.options[`id:${option.id}`]?.balance || 0
+                                        return suboption?.enabled ? (
+                                          <ProductOptionSubOption
+                                            key={suboption.id}
+                                            onChange={handleChangeSuboptionState}
+                                            balance={balance}
+                                            option={option}
+                                            suboption={suboption}
+                                            state={currentState}
+                                            disabled={isSoldOut || maxProductQuantity <= 0}
+                                          />
+                                        ): null
+                                      })
+                                    }
+                                  </WrapperSubOption>
+                                </ProductOption>
+                              </View>
+                            )
+                          }
+                        </React.Fragment>
+                      )
+                    }))}
+                    <ProductComment>
+                      <SectionTitle>
+                        <OText size={16}>{t('SPECIAL_COMMENT', 'Special comment')}</OText>
                       </SectionTitle>
-                      <WrapperIngredients
-                        style={{ backgroundColor: isSoldOut || maxProductQuantity <= 0 ? 'hsl(0, 0%, 72%)' : theme.colors.white }}
-                        hidden={!openIngredient}  
-                      >
-                        {product?.ingredients.map((ingredient: any) => (
-                          <ProductIngredient
-                            key={ingredient.id}
-                            ingredient={ingredient}
-                            state={productCart.ingredients[`id:${ingredient.id}`]}
-                            onChange={handleChangeIngredientState}
-                          />
-                        ))}
-                      </WrapperIngredients>
-                    </View>
-                  )}
-                  {product?.extras?.map((extra: any) => extra.options.map((option: any) => {
-                    const currentState = productCart.options[`id:${option.id}`] || {}
-                    return (
-                      <React.Fragment key={option.id}>
-                        {
-                          showOption(option) && (
-                            <View style={styles.optionContainer}>
-                              <ProductOption
-                                option={option}
-                                currentState={currentState}
-                                error={errors[`id:${option.id}`]}
-                              >
-                                <WrapperSubOption style={{ backgroundColor: isError(option.id) }}>
-                                  {
-                                    option.suboptions.map((suboption: any) => {
-                                      const currentState = productCart.options[`id:${option.id}`]?.suboptions[`id:${suboption.id}`] || {}
-                                      const balance = productCart.options[`id:${option.id}`]?.balance || 0
-                                      return suboption?.enabled ? (
-                                        <ProductOptionSubOption
-                                          key={suboption.id}
-                                          onChange={handleChangeSuboptionState}
-                                          balance={balance}
-                                          option={option}
-                                          suboption={suboption}
-                                          state={currentState}
-                                          disabled={isSoldOut || maxProductQuantity <= 0}
-                                        />
-                                      ): null
-                                    })
-                                  }
-                                </WrapperSubOption>
-                              </ProductOption>
-                            </View>
-                          )
-                        }
-                      </React.Fragment>
-                    )
-                  }))}
-                  <ProductComment>
-                    <SectionTitle>
-                      <OText size={16}>{t('SPECIAL_COMMENT', 'Special comment')}</OText>
-                    </SectionTitle>
-                    <OInput
-                      multiline
-                      placeholder={t('SPECIAL_COMMENT', 'Special comment')}
-                      value={productCart.comment}
-                      onChange={(val: string) => handleChangeCommentState({ target: { value: val } })}
-                      isDisabled={!(productCart && !isSoldOut && maxProductQuantity)}
-                      style={styles.comment}
-                    />
-                  </ProductComment>
-                </ProductEditions>
-              )}
-            </WrapContent>
-          </View>
-        )}
-        {error && error.length > 0 && (
-          <NotFoundSource
-            content={error[0]?.message || error[0]}
-          />
-        )}
-      </ScrollView>
-      {!loading && !error && product && (
-        <ProductActions>
-          {productCart && !isSoldOut && maxProductQuantity > 0 && (
-            <View style={styles.quantityControl}>
-              <TouchableOpacity
-                onPress={decrement}
-                disabled={productCart.quantity === 1 || isSoldOut}
-              >
-                <MaterialCommunityIcon
-                  name='minus-circle'
-                  size={40}
-                  color={productCart.quantity === 1 || isSoldOut ? theme.colors.mediumGray : theme.colors.gray}
-                />
-              </TouchableOpacity>
-              <OText size={20}>{productCart.quantity}</OText>
-              <TouchableOpacity
-                onPress={increment}
-                disabled={maxProductQuantity <= 0 || productCart.quantity >= maxProductQuantity || isSoldOut}
-              >
-                <MaterialCommunityIcon
-                  name='plus-circle'
-                  size={40}
-                  color={maxProductQuantity <= 0 || productCart.quantity >= maxProductQuantity || isSoldOut ? theme.colors.mediumGray : theme.colors.gray}
-                />
-              </TouchableOpacity>
+                      <OInput
+                        multiline
+                        placeholder={t('SPECIAL_COMMENT', 'Special comment')}
+                        value={productCart.comment}
+                        onChange={(val: string) => handleChangeCommentState({ target: { value: val } })}
+                        isDisabled={!(productCart && !isSoldOut && maxProductQuantity)}
+                        style={styles.comment}
+                      />
+                    </ProductComment>
+                  </ProductEditions>
+                )}
+              </WrapContent>
             </View>
           )}
-          <View style={{ width: isSoldOut || maxProductQuantity <= 0 ? '100%' : '65%' }}>
-            {productCart && !isSoldOut && maxProductQuantity > 0 && auth && orderState.options?.address_id && (
-              <OButton
-                onClick={() => handleSaveProduct()}
-                imgRightSrc=''
-                text={`${orderState.loading ? t('LOADING', 'Loading') : editMode ? t('UPDATE', 'Update') : t('ADD_TO_CART', 'Add to Cart')} ${productCart.total ? parsePrice(productCart?.total) : ''}`}
-                textStyle={{ color: theme.colors.white }}
-                style={{
-                  backgroundColor: theme.colors.primary,
-                  opacity: saveErrors ? 0.3 : 1,
-                  borderRadius: 0
-                }}
-                isDisabled={saveErrors}
-              />
+          {error && error.length > 0 && (
+            <NotFoundSource
+              content={error[0]?.message || error[0]}
+            />
+          )}
+        </ScrollView>
+        {!loading && !error && product && (
+          <ProductActions>
+            {productCart && !isSoldOut && maxProductQuantity > 0 && (
+              <View style={styles.quantityControl}>
+                <TouchableOpacity
+                  onPress={decrement}
+                  disabled={productCart.quantity === 1 || isSoldOut}
+                >
+                  <MaterialCommunityIcon
+                    name='minus-circle'
+                    size={40}
+                    color={productCart.quantity === 1 || isSoldOut ? theme.colors.mediumGray : theme.colors.gray}
+                  />
+                </TouchableOpacity>
+                <OText size={20}>{productCart.quantity}</OText>
+                <TouchableOpacity
+                  onPress={increment}
+                  disabled={maxProductQuantity <= 0 || productCart.quantity >= maxProductQuantity || isSoldOut}
+                >
+                  <MaterialCommunityIcon
+                    name='plus-circle'
+                    size={40}
+                    color={maxProductQuantity <= 0 || productCart.quantity >= maxProductQuantity || isSoldOut ? theme.colors.mediumGray : theme.colors.gray}
+                  />
+                </TouchableOpacity>
+              </View>
             )}
-            {auth && !orderState.options?.address_id && (
-              orderState.loading ? (
+            <View style={{ width: isSoldOut || maxProductQuantity <= 0 ? '100%' : '65%' }}>
+              {productCart && !isSoldOut && maxProductQuantity > 0 && auth && orderState.options?.address_id && (
                 <OButton
-                  isDisabled
-                  text={t('LOADING', 'Loading')}
+                  onClick={() => handleSaveProduct()}
                   imgRightSrc=''
-                  style={{ borderRadius: 0 }}
+                  text={`${orderState.loading ? t('LOADING', 'Loading') : editMode ? t('UPDATE', 'Update') : t('ADD_TO_CART', 'Add to Cart')} ${productCart.total ? parsePrice(productCart?.total) : ''}`}
+                  textStyle={{ color: theme.colors.white }}
+                  style={{
+                    backgroundColor: theme.colors.primary,
+                    opacity: saveErrors ? 0.3 : 1,
+                    borderRadius: 0
+                  }}
+                  isDisabled={saveErrors}
+                />
+              )}
+              {auth && !orderState.options?.address_id && (
+                orderState.loading ? (
+                  <OButton
+                    isDisabled
+                    text={t('LOADING', 'Loading')}
+                    imgRightSrc=''
+                    style={{ borderRadius: 0 }}
 
-                />
-              ) : (
+                  />
+                ) : (
+                  <OButton
+                    onClick={navigation.navigate('AddressList')}
+                    style={{ borderRadius: 0 }}
+                  />
+                )
+              )}
+              {(!auth || isSoldOut || maxProductQuantity <= 0) && (
                 <OButton
-                  onClick={navigation.navigate('AddressList')}
-                  style={{ borderRadius: 0 }}
+                  isDisabled={isSoldOut || maxProductQuantity <= 0}
+                  onClick={() => handleRedirectLogin(productCart)}
+                  text={isSoldOut || maxProductQuantity <= 0 ? t('SOLD_OUT', 'Sold out') : t('LOGIN_SIGNUP', 'Login / Sign Up')}
+                  imgRightSrc=''
+                  textStyle={{ color: theme.colors.primary }}
+                  style={{ borderColor: theme.colors.primary, backgroundColor: theme.colors.white, borderRadius: 0 }}
                 />
-              )
-            )}
-            {(!auth || isSoldOut || maxProductQuantity <= 0) && (
-              <OButton
-                isDisabled={isSoldOut || maxProductQuantity <= 0}
-                onClick={() => handleRedirectLogin(productCart)}
-                text={isSoldOut || maxProductQuantity <= 0 ? t('SOLD_OUT', 'Sold out') : t('LOGIN_SIGNUP', 'Login / Sign Up')}
-                imgRightSrc=''
-                textStyle={{ color: theme.colors.primary }}
-                style={{ borderColor: theme.colors.primary, backgroundColor: theme.colors.white, borderRadius: 0 }}
-              />
-            )}
-          </View>
-        </ProductActions>
-      )}
+              )}
+            </View>
+          </ProductActions>
+        )}
+      </KeyboardView>
     </>
   )
 }

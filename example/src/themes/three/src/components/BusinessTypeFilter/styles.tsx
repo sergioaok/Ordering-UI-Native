@@ -5,11 +5,7 @@ export const BCContainer = styled.View`
   width: 100%;
   justify-content: flex-start;
   text-align: center;
-`
-
-export const BusinessCategoriesTitle = styled.View`
   flex: 1;
-  margin-top: 10px;
 `
 
 export const BusinessCategories = styled.View`

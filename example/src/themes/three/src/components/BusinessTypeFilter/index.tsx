@@ -3,7 +3,7 @@ import { StyleSheet, FlatList, View, ScrollView, TouchableOpacity } from 'react-
 import { Fade, Placeholder, PlaceholderLine } from 'rn-placeholder'
 import { BusinessTypeFilter as BusinessTypeFilterController, useLanguage } from 'ordering-components/native'
 
-import { BusinessCategoriesTitle, BusinessCategories, Category, BCContainer } from './styles'
+import { BusinessCategories, Category, BCContainer } from './styles'
 import { OIcon, OText } from '../../../../../components/shared'
 import { BusinessTypeFilterParams } from '../../../../../types'
 import { useTheme } from 'styled-components/native'
